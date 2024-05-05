@@ -11,6 +11,7 @@ namespace AirportTicketBookingSystem.Utilities
     {
         internal static string ShowMenu(List<string> options)
         {
+            Console.WriteLine();
             Console.WriteLine("*****************************");
             Console.WriteLine("***Please select an option***");
             Console.WriteLine("*****************************");
@@ -26,7 +27,7 @@ namespace AirportTicketBookingSystem.Utilities
             return selection != null ? selection : "0";
         }
 
-        internal static void LaunchInitialSelection(string selection)
+        internal static void LaunchUserTypeSelection(string selection)
         {
             switch (selection)
             {
@@ -41,8 +42,7 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Passenger User
                 case "2":
-                    List<string> options = PassengerUtilities.MenuOptions();
-                    ShowMenu(options);
+                    PassengerUtilities.ShowAndLaunchManagePassengerMenu();
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -61,12 +61,24 @@ namespace AirportTicketBookingSystem.Utilities
             }
         }
 
+        public static List<string> UserTypeOptions()
+        {
+            List<string> menu = new List<string>();
+            menu.Add("I'm a Manager");
+            menu.Add("I'm a Passenger");
+
+            return menu;
+        }
+
+
         public static void ExitApplication()
         {
             Console.WriteLine("****************************");
             Console.WriteLine("*  Thank you for you time  *");
             Console.WriteLine("****************************");
         }
+
+
 
     }
 }

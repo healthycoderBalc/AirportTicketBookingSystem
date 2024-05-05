@@ -12,22 +12,19 @@ namespace AirportTicketBookingSystem
 
         public static void Main(string[] args)
         {
-            ShowInitialMenu();
+            ShowAndLaunchUserTypeMenu();
         }
 
-        private static void ShowInitialMenu()
+        private static void ShowAndLaunchUserTypeMenu()
         {
-            List<string> menu = new List<string>();
-            menu.Add("I'm a Manager");
-            menu.Add("I'm a Passenger");
+          List<string> menu = Utilities.Utilities.UserTypeOptions();
 
-            string selection = string.Empty;
+            string userTypeSelection = string.Empty;
             do
             {
-                selection = Utilities.Utilities.ShowMenu(menu);
-                Utilities.Utilities.LaunchInitialSelection(selection);
-            } while (selection != "0");
-            //return selection;
+                userTypeSelection = Utilities.Utilities.ShowMenu(menu);
+                Utilities.Utilities.LaunchUserTypeSelection(userTypeSelection);
+            } while (userTypeSelection != "0");
         }
     }
 }
