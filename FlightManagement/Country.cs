@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem
+namespace AirportTicketBookingSystem.FlightManagement
 {
     public class Country
     {
@@ -13,6 +13,8 @@ namespace AirportTicketBookingSystem
         {
             Name = name;
         }
+
+
 
     }
 }

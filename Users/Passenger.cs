@@ -9,19 +9,16 @@ namespace AirportTicketBookingSystem.Users
     public class Passenger
     {
         public string Name { get; set; }
+        public string Email { get; set; }
 
-        public Passenger(string name)
+        public Passenger(string name, string email)
         {
             Name = name;
+            Email = email;
         }
 
-        public List<string> MenuOptions()
-        {
-            List<string> menu = new List<string>();
-            menu.Add("Book a flight");
-            menu.Add("Manage Bookins");
 
-            return menu;
-        }
+
+
     }
 }

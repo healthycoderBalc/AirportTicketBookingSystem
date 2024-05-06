@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem
+namespace AirportTicketBookingSystem.FlightManagement
 {
     public class Airport
     {
@@ -16,6 +16,11 @@ namespace AirportTicketBookingSystem
         {
             Name = name;
             Country = country;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} - Country: {Country.Name}";
         }
 
     }

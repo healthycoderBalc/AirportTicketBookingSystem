@@ -9,9 +9,10 @@ namespace AirportTicketBookingSystem.Utilities
 {
     internal class Utilities
     {
-        internal static string ShowMenu(List<string> options)
+        internal static string ShowMenu(List<string> options, string? title = null)
         {
             Console.WriteLine();
+            if (!string.IsNullOrEmpty(title)) { Console.WriteLine(title); }
             Console.WriteLine("*****************************");
             Console.WriteLine("***Please select an option***");
             Console.WriteLine("*****************************");

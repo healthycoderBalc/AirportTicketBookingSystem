@@ -12,6 +12,8 @@ namespace AirportTicketBookingSystem
 
         public static void Main(string[] args)
         {
+            FlightsInventory.LoadFlightsData();
+            Console.WriteLine(FlightsInventory.Flights[0]);
             ShowAndLaunchUserTypeMenu();
         }
 
