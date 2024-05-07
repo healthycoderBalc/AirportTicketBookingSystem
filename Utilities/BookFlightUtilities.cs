@@ -30,7 +30,7 @@ namespace AirportTicketBookingSystem.Utilities
                     List<string> passengerData = CreateAccount("Creating Account");
                     Passenger createdPassengerAccount = PassengerRepository.CreateAccount(passengerData[0], passengerData[1], passengerData[2]);
 
-                    string ceroToExitA = MakeCompleteBooking(flightsOption, createdPassengerAccount);
+                    MakeCompleteBooking(flightsOption, createdPassengerAccount);
 
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
@@ -44,7 +44,7 @@ namespace AirportTicketBookingSystem.Utilities
                     if (validatedPassengerAccount != null)
                     {
                         Console.WriteLine("Passenger validated: " + validatedPassengerAccount);
-                        string ceroToExitB = MakeCompleteBooking(flightsOption, validatedPassengerAccount);
+                        MakeCompleteBooking(flightsOption, validatedPassengerAccount);
                     }
                     else
                     {
@@ -237,7 +237,7 @@ namespace AirportTicketBookingSystem.Utilities
             return flightAvailability;
         }
 
-        private static string MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount)
+        private static void MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount)
         {
             // select the flight
             Flight selectedFlight = SelectingFlightToBook(flightsOption);
@@ -251,9 +251,6 @@ namespace AirportTicketBookingSystem.Utilities
 
             Console.WriteLine(selectedFlight);
             Console.WriteLine(createdPassengerAccount?.Bookings?.Last());
-
-            // return 0 for exit
-            return "0";
         }
     }
 }
