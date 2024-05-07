@@ -33,5 +33,29 @@ namespace AirportTicketBookingSystem.Users
             }
 
         }
+
+        public static Booking CreateBooking(Passenger passenger, FlightAvailability flightAvailability)
+        {
+            // creating booking object with passenger data
+            Booking booking = new(flightAvailability, passenger);
+
+            // look for passenger and add the booking to its list of bookings.
+            foreach (Passenger passenger1 in RegisteredPassengers)
+            {
+                if (passenger1.Email.Equals(passenger.Email))
+                {
+                    if (passenger1.Bookings != null)
+                    {
+
+                        passenger1.Bookings.Add(booking);
+                    }
+                    else
+                    {
+                        passenger1.Bookings = [booking];
+                    }
+                }
+            }
+            return booking;
+        }
     }
 }

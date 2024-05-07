@@ -21,5 +21,7 @@ namespace AirportTicketBookingSystem.FlightManagement
             TotalPlaces = totalPlaces;
             AvailablePlaces = availablePlaces;
         }
+
+
     }
 }

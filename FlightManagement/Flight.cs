@@ -90,5 +90,19 @@ namespace AirportTicketBookingSystem.FlightManagement
             }
             return stringBuilder.ToString();
         }
+
+        public static FlightAvailability? GetFlightAvailabilityByFlightClass(Flight flight, FlightClass flightClass)
+        {
+            try
+            {
+                FlightAvailability flightAvailability = flight.FlightAvailabilities.Where(fa => fa.FlightClass == flightClass).Single();
+                return flightAvailability;
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("The flight class does not exist in the flight");
+                return null;
+            }
+        }
     }
 }

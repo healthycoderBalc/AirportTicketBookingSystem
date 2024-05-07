@@ -146,17 +146,18 @@ namespace AirportTicketBookingSystem.Utilities
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
-                    return [];
+                    return result;
+
                 //Going back
                 case "0":
                     Console.WriteLine();
                     Console.Write("Press Enter to Go back");
                     Console.ReadLine();
-                    return [];
+                    return result;
 
                 default:
                     Console.WriteLine("Yoy have not selected a valid option, please try again: ");
-                    return [];
+                    return result;
 
             }
         }
@@ -177,9 +178,13 @@ namespace AirportTicketBookingSystem.Utilities
                 Console.WriteLine($"*********************************");
                 Console.WriteLine($"******** Current Filters ********");
                 Console.WriteLine($"*********************************");
+
                 Utilities.ShowListOfStrings((List<string>)resultSearch[0]);
+
+
                 Console.WriteLine();
                 searchFlight = Utilities.ShowMenu(menu, title);
+
                 resultSearch = LaunchSearchFlightsSelection(searchFlight, (List<string>)resultSearch[0], (List<Flight>)resultSearch[1]);
             } while (searchFlight != "0");
         }
@@ -211,7 +216,7 @@ namespace AirportTicketBookingSystem.Utilities
             return searchTerm;
         }
 
-        private static List<string> MenuOfFlightClasses()
+        public static List<string> MenuOfFlightClasses()
         {
             List<string> menu = [];
             FlightClass[] allFlightClasses = (FlightClass[])Enum.GetValues(typeof(FlightClass));

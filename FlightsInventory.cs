@@ -205,5 +205,20 @@ namespace AirportTicketBookingSystem
             else { Console.WriteLine("\nNo flights to show"); }
         }
 
+        public static Flight? GetFlightById(int id)
+        {
+            try
+            {
+                Flight flight = Flights.Where(f => f.Id.Equals(id)).Single();
+                return flight;
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("There is no flight with that number (Id)");
+                return null;
+            }
+
+        }
+
     }
 }
