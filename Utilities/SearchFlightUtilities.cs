@@ -142,8 +142,7 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Search ready - Select a Flight
                 case "9":
-                    // Pending functionality
-
+                    BookFlightUtilities.ShowAndLaunchAccountMenu(searchedListOfFlights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
