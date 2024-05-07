@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.FlightManagement;
 using System.Linq;
+using System.Reflection;
+using System.Diagnostics.Metrics;
 
 namespace AirportTicketBookingSystem
 {
@@ -97,28 +99,83 @@ namespace AirportTicketBookingSystem
             {
                 int places = placesByClass[(int)fc];
                 double price = pricesByClass[(int)fc];
-                flightsByClass.Add(new FlightAvailability(fc, price, places));
+                flightsByClass.Add(new FlightAvailability(fc, price, places, places));
             }
             return flightsByClass;
         }
 
-        public static List<Flight> SearchFlightsByDepartureAirport(string DepartureAirport)
+        // ******************************************
+        // Searches
+        // ******************************************
+
+         public static List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
+        {
+            // getting type of flight and property by its name
+            Type flightType = typeof(Flight);
+            PropertyInfo? property = flightType.GetProperty(fieldName);
+
+            if (property != null)
+            {
+                IEnumerable<Flight> resultSearch =
+                   flightsToSearch.Where(flight =>
+                   { // using property to check search
+                       var propertyValue = property.GetValue(flight);
+                       if (propertyValue != null && propertyValue.GetType() == typeof(Airport))
+                       {
+                           if (country)
+                           {
+                               return ((Airport)propertyValue).Country.Name == fieldValue;
+                           }
+                           else
+                           {
+                               return ((Airport)propertyValue).Name == fieldValue;
+                           }
+                       }
+                       return false;
+                   });
+                return resultSearch.ToList();
+            }
+            else
+            {
+                return [];
+            }
+        }
+
+
+        public static List<Flight> SearchFlightsByClass(List<Flight> flightsToSearch, int fcNumber)
         {
 
             IEnumerable<Flight> resultSearch =
-                from flight in Flights
-                where flight.DepartureAirport.Name == DepartureAirport
-                select flight;
+               flightsToSearch.Where(flight => flight.FlightAvailabilities.Any(availability => ((int)availability.FlightClass == fcNumber && availability.AvailablePlaces >0)));
 
             return resultSearch.ToList();
         }
 
-        public static void ShowFlights(List<Flight> flights)
+        public static List<Flight> SearchFlightsByPrice(List<Flight> flightsToSearch, List<double> priceRange)
         {
-            foreach (Flight f in flights)
+            IEnumerable<Flight> resultSearch =
+              flightsToSearch.Where(flight => flight.FlightAvailabilities.Any(availability => (availability.Price >= priceRange[0] && availability.Price <= priceRange[1])));
+
+            return resultSearch.ToList();
+        }
+
+        public static void ShowFlights(List<Flight> flights, int? selectedClass = null)
+        {
+            if (flights.Count > 0)
             {
-                Console.WriteLine(f);
+                Console.WriteLine();
+                Console.WriteLine($"*********************************");
+                Console.WriteLine($"********* Flights Found *********");
+                Console.WriteLine($"*********************************");
+                foreach (Flight f in flights)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(f);
+                    Console.WriteLine(Flight.ShowFlightAvailabilities(f.FlightAvailabilities, selectedClass ?? null));
+                }
+                Console.WriteLine($"*********************************");
             }
+            else { Console.WriteLine("\nNo flights to show"); }
         }
 
     }

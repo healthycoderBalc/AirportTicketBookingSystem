@@ -12,11 +12,14 @@ namespace AirportTicketBookingSystem.FlightManagement
         public double Price { get; set; }
         public int TotalPlaces { get; set; }
 
-        public FlightAvailability( FlightClass flightClass, double price, int totalPlaces)
+        public int AvailablePlaces { get; set; }
+
+        public FlightAvailability( FlightClass flightClass, double price, int totalPlaces, int availablePlaces)
         {
             FlightClass = flightClass;
             Price = price;
             TotalPlaces = totalPlaces;
+            AvailablePlaces = availablePlaces;
         }
     }
 }

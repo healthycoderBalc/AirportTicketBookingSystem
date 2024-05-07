@@ -16,9 +16,5 @@ namespace AirportTicketBookingSystem.Users
             Name = name;
             Email = email;
         }
-
-
-
-
     }
 }

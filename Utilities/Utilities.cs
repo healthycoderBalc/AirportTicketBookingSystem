@@ -13,15 +13,15 @@ namespace AirportTicketBookingSystem.Utilities
         {
             Console.WriteLine();
             if (!string.IsNullOrEmpty(title)) { Console.WriteLine(title); }
-            Console.WriteLine("*****************************");
-            Console.WriteLine("***Please select an option***");
-            Console.WriteLine("*****************************");
+            Console.WriteLine("*****************************************");
+            Console.WriteLine("*********Please select an option*********");
+            Console.WriteLine("*****************************************");
             for (int i = 0; i < options.Count; i++)
             {
-                Console.WriteLine($"* {i + 1} - {options[i]}".PadRight(28)+"*");
+                Console.WriteLine($"* {i + 1} - {options[i]}".PadRight(40)+"*");
             }
-            Console.WriteLine("* 0 - Exit                  *");
-            Console.WriteLine("*****************************");
+            Console.WriteLine("* 0 - Exit                              *");
+            Console.WriteLine("*****************************************");
 
             Console.Write("Your selection is: ");
             string? selection = Console.ReadLine();
@@ -79,6 +79,21 @@ namespace AirportTicketBookingSystem.Utilities
             Console.WriteLine("****************************");
         }
 
+
+        public static void ShowListOfStrings(List<string> strings)
+        {
+            if (strings.Count > 0)
+            {
+
+            foreach(string element in strings)
+            {
+                Console.Write($"| {element} |");
+            }
+            } else
+            {
+                Console.WriteLine("Nothing to show");
+            }
+        }
 
 
     }

@@ -22,28 +22,40 @@ namespace AirportTicketBookingSystem.FlightManagement
             DepartureAirport = departureAirport;
             ArrivalAirport = arrivalAirport;
             FlightAvailabilities = flightAvailabilities;
-
         }
 
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Id: {Id}");
+            stringBuilder.AppendLine($"Flight Id: {Id}");
             stringBuilder.AppendLine("Departure:");
             stringBuilder.AppendLine($"  Airport: {DepartureAirport}");
             stringBuilder.AppendLine($"  Date: {DepartureDate}");
             stringBuilder.AppendLine("Arrival:");
             stringBuilder.AppendLine($"  Airport: {ArrivalAirport}");
-            stringBuilder.AppendLine($"Classes:");
-
-            foreach (FlightAvailability flightAvailability in FlightAvailabilities)
-            {
-                stringBuilder.AppendLine($"  {flightAvailability.FlightClass}: ${flightAvailability.Price} - Places: {flightAvailability.TotalPlaces}");
-            }
 
             return stringBuilder.ToString();
         }
 
-
+        public static string ShowFlightAvailabilities(List<FlightAvailability> flightAvailabilities, int? flightClass = null)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Classes:");
+            foreach (FlightAvailability flightAvailability in flightAvailabilities)
+            {
+                if (flightAvailability.AvailablePlaces > 0)
+                {
+                    if (flightClass != null && flightAvailability.FlightClass == (FlightClass)flightClass - 1)
+                    {
+                        stringBuilder.AppendLine($"  {flightAvailability.FlightClass}: ${flightAvailability.Price} - Places: {flightAvailability.TotalPlaces}");
+                    }
+                    else if (flightClass == null)
+                    {
+                        stringBuilder.AppendLine($"  {flightAvailability.FlightClass}: ${flightAvailability.Price} - Places: {flightAvailability.TotalPlaces}");
+                    }
+                }
+            }
+            return stringBuilder.ToString();
+        }
     }
 }

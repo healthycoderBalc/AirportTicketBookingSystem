@@ -11,10 +11,12 @@ namespace AirportTicketBookingSystem.FlightManagement
     {
         public FlightAvailability FlightAvailability { get; set; }
         public Passenger Passenger { get; set; }
-        public Ticket(FlightAvailability flightAvailability, Passenger passenger)
+        public FlightClass FlightClass { get; set; }
+        public Ticket(FlightAvailability flightAvailability, Passenger passenger, FlightClass flightClass)
         {
             FlightAvailability = flightAvailability;
             Passenger = passenger;
+            FlightClass = flightClass;
         }
     }
 }
