@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.FlightManagement
 {
-    public class Ticket
+    public class Booking
     {
         public FlightAvailability FlightAvailability { get; set; }
         public Passenger Passenger { get; set; }
-        public FlightClass FlightClass { get; set; }
-        public Ticket(FlightAvailability flightAvailability, Passenger passenger, FlightClass flightClass)
+        public Booking(FlightAvailability flightAvailability, Passenger passenger, FlightClass flightClass)
         {
             FlightAvailability = flightAvailability;
             Passenger = passenger;
-            FlightClass = flightClass;
         }
     }
 }

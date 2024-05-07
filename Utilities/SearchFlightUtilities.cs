@@ -42,7 +42,9 @@ namespace AirportTicketBookingSystem.Utilities
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
-                    return [];
+                    ((List<string>)result[0]).Add("Price");
+                    result[1] = searchedListOfFlights;
+                    return result;
 
                 // Search By Departure Country
                 case "2":
@@ -72,12 +74,15 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Search By Departure Date
                 case "4":
-                    // Pending functionality
-
+                    List<int> date = SearchByDate("Date");
+                    searchedListOfFlights = FlightsInventory.SearchFlightsByDate(searchedListOfFlights, date);
+                    FlightsInventory.ShowFlights(searchedListOfFlights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
-                    return [];
+                    ((List<string>)result[0]).Add("Date");
+                    result[1] = searchedListOfFlights;
+                    return result;
 
 
                 // Search By Departure Airport
@@ -232,8 +237,54 @@ namespace AirportTicketBookingSystem.Utilities
                 }
                 Console.WriteLine($"Your search price range: {priceRange[0]} - {priceRange[1]}");
                 Console.WriteLine();
-            } while (priceRange.Count <2);
+            } while (priceRange.Count < 2);
             return priceRange;
+        }
+
+        private static List<int> SearchByDate(string by)
+        {
+            List<int> date = [];
+            bool allValid = false;
+            do
+            {
+                Console.WriteLine();
+                Console.WriteLine($"****** Search by {by} ******");
+                Console.Write($"Please write the the YEAR in format YYYY (Enter for Current Year): ");
+                string? year = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(year))
+                {
+                    year = DateTime.Now.Year.ToString();
+                }
+                bool validYear = int.TryParse(year, out int numericYear);
+                Console.Write($"Please write the the MONTH in numeric format MM (Enter for Current Month): ");
+                string? month = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(month))
+                {
+                    month = DateTime.Now.Month.ToString();
+                }
+                bool validMonth = int.TryParse(month, out int numericMonth);
+
+                Console.Write($"Please write the the DAY in numeric format DD (Enter for today): ");
+                string? day = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(day))
+                {
+                    day = DateTime.Now.Day.ToString();
+                }
+                bool validDay = int.TryParse(day, out int numericDay);
+
+                allValid = validYear && validMonth && validDay;
+
+                if (allValid)
+                {
+                    date.Add(numericYear);
+                    date.Add(numericMonth);
+                    date.Add(numericDay);
+                }
+
+                Console.WriteLine($"Date for search: {date[0]} - {date[1]} - {date[2]}");
+                Console.WriteLine();
+            } while (!allValid);
+            return date;
         }
 
     }

@@ -11,12 +11,16 @@
       "RelativeMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|solutionrelative:utilities\\searchflightutilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|d:\\foothill\\c#course\\exercise\\airportticketbookingsystem\\flightmanagement\\flightavailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|solutionrelative:flightmanagement\\flightavailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|d:\\foothill\\c#course\\exercise\\airportticketbookingsystem\\flightmanagement\\flight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|solutionrelative:flightmanagement\\flight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|d:\\foothill\\c#course\\exercise\\airportticketbookingsystem\\flightmanagement\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|solutionrelative:flightmanagement\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|d:\\foothill\\c#course\\exercise\\airportticketbookingsystem\\flightmanagement\\flightavailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E509BC0C-38B7-46B6-A636-1753211E5A61}|AirportTicketBookingSystem.csproj|solutionrelative:flightmanagement\\flightavailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,9 +29,22 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 208,
-          "SelectedChildIndex": 0,
+          "DockedWidth": 176,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Ticket.cs",
+              "DocumentMoniker": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\Ticket.cs",
+              "RelativeDocumentMoniker": "FlightManagement\\Ticket.cs",
+              "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\Ticket.cs",
+              "RelativeToolTip": "FlightManagement\\Ticket.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-07T12:31:14.76Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -36,15 +53,28 @@
               "RelativeDocumentMoniker": "Utilities\\SearchFlightUtilities.cs",
               "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\Utilities\\SearchFlightUtilities.cs",
               "RelativeToolTip": "Utilities\\SearchFlightUtilities.cs",
-              "ViewState": "AQIAABcAAAAAAAAAAAAkwCwAAAAeAAAA",
+              "ViewState": "AQIAAPIAAAAAAAAAAADwvw4BAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-06T14:59:27.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FlightAvailability.cs",
+              "DocumentMoniker": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\FlightAvailability.cs",
+              "RelativeDocumentMoniker": "FlightManagement\\FlightAvailability.cs",
+              "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\FlightAvailability.cs",
+              "RelativeToolTip": "FlightManagement\\FlightAvailability.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T17:08:56.239Z",
               "EditorCaption": ""
             }
           ]
         },
         {
-          "DockedWidth": 192,
+          "DockedWidth": 224,
           "SelectedChildIndex": 0,
           "Children": [
             {
@@ -55,7 +85,7 @@
               "RelativeDocumentMoniker": "FlightsInventory.cs",
               "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightsInventory.cs",
               "RelativeToolTip": "FlightsInventory.cs",
-              "ViewState": "AQIAAI4AAAAAAAAAAAAswJwAAAAWAAAA",
+              "ViewState": "AQIAAHsAAAAAAAAAAAAswLcAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-05T19:04:11.717Z",
               "EditorCaption": ""
@@ -63,25 +93,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "FlightAvailability.cs",
-              "DocumentMoniker": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\FlightAvailability.cs",
-              "RelativeDocumentMoniker": "FlightManagement\\FlightAvailability.cs",
-              "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\FlightAvailability.cs",
-              "RelativeToolTip": "FlightManagement\\FlightAvailability.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-06T17:08:56.239Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "Flight.cs",
               "DocumentMoniker": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\Flight.cs",
               "RelativeDocumentMoniker": "FlightManagement\\Flight.cs",
               "ToolTip": "D:\\Foothill\\C#Course\\Exercise\\AirportTicketBookingSystem\\FlightManagement\\Flight.cs",
               "RelativeToolTip": "FlightManagement\\Flight.cs",
-              "ViewState": "AQIAAB8AAAAAAAAAAAAcwDgAAAANAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-06T16:09:13.421Z",
               "EditorCaption": ""

@@ -86,7 +86,10 @@ namespace AirportTicketBookingSystem
             Flight f9 = new(9, new DateTime(2024, 5, 6, 10, 0, 0), Airports[8], Airports[1], flightAvailabilities);
             Flight f10 = new(10, new DateTime(2024, 5, 7, 7, 30, 0), Airports[0], Airports[2], flightAvailabilities);
 
-            Flights.AddRange([f1, f2, f3, f4, f5, f6, f7, f8, f9, f10]);
+            List<FlightAvailability> flightAvailabilities1 = LoadExtraFlightAvailability();
+            Flight f11 = new(11, new DateTime(2024, 5, 7, 7, 30, 0), Airports[0], Airports[8], flightAvailabilities1);
+
+            Flights.AddRange([f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11]);
 
         }
 
@@ -104,11 +107,26 @@ namespace AirportTicketBookingSystem
             return flightsByClass;
         }
 
+        public static List<FlightAvailability> LoadExtraFlightAvailability()
+        {
+            List<int> placesByClass = [30, 15, 5];
+            List<double> pricesByClass = [3000, 3500, 4000];
+            List<FlightAvailability> flightsByClass = new List<FlightAvailability>();
+            foreach (FlightClass fc in Enum.GetValues(typeof(FlightClass)))
+            {
+                int places = placesByClass[(int)fc];
+                double price = pricesByClass[(int)fc];
+                flightsByClass.Add(new FlightAvailability(fc, price, places, places));
+            }
+            return flightsByClass;
+        }
+
+
         // ******************************************
         // Searches
         // ******************************************
 
-         public static List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
+        public static List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
         {
             // getting type of flight and property by its name
             Type flightType = typeof(Flight);
@@ -146,7 +164,7 @@ namespace AirportTicketBookingSystem
         {
 
             IEnumerable<Flight> resultSearch =
-               flightsToSearch.Where(flight => flight.FlightAvailabilities.Any(availability => ((int)availability.FlightClass == fcNumber && availability.AvailablePlaces >0)));
+               flightsToSearch.Where(flight => flight.FlightAvailabilities.Any(availability => ((int)availability.FlightClass == fcNumber && availability.AvailablePlaces > 0)));
 
             return resultSearch.ToList();
         }
@@ -159,6 +177,15 @@ namespace AirportTicketBookingSystem
             return resultSearch.ToList();
         }
 
+        public static List<Flight> SearchFlightsByDate(List<Flight> flightsToSearch, List<int> date)
+        {
+            IEnumerable<Flight> resultSearch =
+              flightsToSearch.Where(flight => flight.DepartureDate.Year.Equals(date[0]) && flight.DepartureDate.Month.Equals(date[1]) && flight.DepartureDate.Day.Equals(date[2]));
+
+            return resultSearch.ToList();
+        }
+
+
         public static void ShowFlights(List<Flight> flights, int? selectedClass = null)
         {
             if (flights.Count > 0)
@@ -170,8 +197,8 @@ namespace AirportTicketBookingSystem
                 foreach (Flight f in flights)
                 {
                     Console.WriteLine();
-                    Console.WriteLine(f);
-                    Console.WriteLine(Flight.ShowFlightAvailabilities(f.FlightAvailabilities, selectedClass ?? null));
+                    Console.WriteLine(Flight.ShowFlightShort(f));
+                    Console.WriteLine(Flight.ShowFlightAvailabilitiesShort(f.FlightAvailabilities, selectedClass ?? null));
                 }
                 Console.WriteLine($"*********************************");
             }
