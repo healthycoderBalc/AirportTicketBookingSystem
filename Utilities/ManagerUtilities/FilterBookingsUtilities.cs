@@ -36,6 +36,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByFlight = BookingRepository.GetBookingsByFlightId(flightSelected);
                     BookingRepository.PrintBookings(bookingsByFlight);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 // Filter by Price
@@ -44,6 +45,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByPrice = BookingRepository.GetBookingsByPrice(priceRange[0], priceRange[1]);
                     BookingRepository.PrintBookings(bookingsByPrice);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
 
@@ -53,6 +55,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByDepartureCountry = BookingRepository.GetBookingsByDepartureCountry(departureCountry);
                     BookingRepository.PrintBookings(bookingsByDepartureCountry);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
 
@@ -62,6 +65,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByDestinationCountry = BookingRepository.GetBookingsByDestinationCountry(destinationCountry);
                     BookingRepository.PrintBookings(bookingsByDestinationCountry);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 // Filter By Departure Date
@@ -70,6 +74,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByDate = BookingRepository.GetBookingsByDepartureDate(date);
                     BookingRepository.PrintBookings(bookingsByDate);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
 
@@ -79,6 +84,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByDepartureAirport = BookingRepository.GetBookingsByDepartureAirport(departureAirport);
                     BookingRepository.PrintBookings(bookingsByDepartureAirport);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 // Filter By Arrival Airport
@@ -87,6 +93,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByArrivalAirport = BookingRepository.GetBookingsByArrivalAirport(arrivalAirport);
                     BookingRepository.PrintBookings(bookingsByArrivalAirport);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 // Filter By Passenger
@@ -95,6 +102,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByPassenger = BookingRepository.GetBookingsByPassengerId(passengerId);
                     BookingRepository.PrintBookings(bookingsByPassenger);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 // Filter By Flight Class
@@ -103,13 +111,12 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                     List<Booking> bookingsByFlightClass = BookingRepository.GetBookingsByClass(selectedFlightClass);
                     BookingRepository.PrintBookings(bookingsByFlightClass);
                     Console.WriteLine();
+                    Console.ReadLine();
                     break;
 
                 //Going back
                 case "0":
                     Console.WriteLine();
-                    Console.Write("Press Enter to Go back");
-                    Console.ReadLine();
                     break;
 
                 default:
@@ -129,7 +136,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 Console.WriteLine();
                 filterBookingOption = Utilities.ShowMenu(menu, title);
 
-               LaunchFilterBookingsSelection(filterBookingOption);
+                LaunchFilterBookingsSelection(filterBookingOption);
             } while (filterBookingOption != "0");
         }
 
