@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Users;
+using AirportTicketBookingSystem.Utilities.ManagerUtilities;
+using AirportTicketBookingSystem.Utilities.PassengerUtilities;
 
 namespace AirportTicketBookingSystem.Utilities
 {
@@ -18,7 +20,7 @@ namespace AirportTicketBookingSystem.Utilities
             Console.WriteLine("*****************************************");
             for (int i = 0; i < options.Count; i++)
             {
-                Console.WriteLine($"* {i + 1} - {options[i]}".PadRight(40)+"*");
+                Console.WriteLine($"* {i + 1} - {options[i]}".PadRight(40) + "*");
             }
             Console.WriteLine("* 0 - Exit                              *");
             Console.WriteLine("*****************************************");
@@ -34,8 +36,12 @@ namespace AirportTicketBookingSystem.Utilities
             {
                 // Manager User
                 case "1":
-                    string code = ManagerUtilities.RequestManagerCode();
-                    Manager.Validate(code);
+                    string code = ManagerUtilities.ManagerUtilities.RequestManagerCode();
+                    bool validated = Manager.Validate(code);
+                    if (validated)
+                    {
+                        ManagerUtilities.ManagerUtilities.ShowAndLaunchManagerOptionsMenu();
+                    }
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -43,10 +49,10 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Passenger User
                 case "2":
-                    PassengerUtilities.ShowAndLaunchManagePassengerMenu();
+                    PassengerUtilities.PassengerUtilities.ShowAndLaunchManagePassengerMenu();
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
-                    Console.ReadLine();
+                   Console.ReadLine();
                     break;
 
                 //Exit Application
@@ -85,11 +91,12 @@ namespace AirportTicketBookingSystem.Utilities
             if (strings.Count > 0)
             {
 
-            foreach(string element in strings)
-            {
-                Console.Write($"| {element} |");
+                foreach (string element in strings)
+                {
+                    Console.Write($"| {element} |");
+                }
             }
-            } else
+            else
             {
                 Console.WriteLine("Nothing to show");
             }

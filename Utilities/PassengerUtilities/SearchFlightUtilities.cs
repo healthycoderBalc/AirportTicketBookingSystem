@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem.Utilities
+namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
     public static class SearchFlightUtilities
     {
@@ -115,7 +115,7 @@ namespace AirportTicketBookingSystem.Utilities
                     bool validInput = int.TryParse(SearchBy("Flight Class", MenuOfFlightClasses()), out selectedClass);
                     if (validInput)
                     {
-                        searchedListOfFlights = FlightsInventory.SearchFlightsByClass(searchedListOfFlights, (int)selectedClass);
+                        searchedListOfFlights = FlightsInventory.SearchFlightsByClass(searchedListOfFlights, selectedClass);
                         FlightsInventory.ShowFlights(searchedListOfFlights, selectedClass);
                         Console.WriteLine();
                         Console.Write("Press Enter to continue");

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.FlightManagement;
 
-namespace AirportTicketBookingSystem.Utilities
+namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
     public static class PassengerUtilities
     {
@@ -141,7 +141,8 @@ namespace AirportTicketBookingSystem.Utilities
                     manageBookings = Utilities.ShowMenu(menu, $"You are {passenger.Name}");
                     LaunchManageBookingsSelection(manageBookings, passenger);
                 } while (manageBookings != "0");
-            } else
+            }
+            else
             {
                 Console.WriteLine("Error while validating your credentials");
             }

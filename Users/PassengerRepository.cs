@@ -10,10 +10,30 @@ namespace AirportTicketBookingSystem.Users
     public static class PassengerRepository
     {
         public static readonly List<Passenger> RegisteredPassengers = [];
+        public static List<int> UsedIds = new List<int>() { 0 };
+
+        public static void PrintAllRegisteredPassengers()
+        {
+            if (RegisteredPassengers == null)
+            {
+                Console.WriteLine("No passengers to show");
+            }
+            else
+            {
+                foreach (Passenger passenger in RegisteredPassengers)
+                {
+                    Console.WriteLine(passenger);
+                    Console.WriteLine();
+                }
+            }
+        }
+
         public static Passenger CreateAccount(string passengerName, string passengerEmail, string passengerPassword)
         {
-            Passenger passenger = new(passengerName, passengerEmail, passengerPassword);
+            int lastUsedId = PassengerRepository.UsedIds.Last();
+            Passenger passenger = new(lastUsedId + 1, passengerName, passengerEmail, passengerPassword);
             RegisteredPassengers.Add(passenger);
+            UsedIds.Add(lastUsedId+1);
             return passenger;
         }
 
