@@ -131,17 +131,20 @@ namespace AirportTicketBookingSystem.Utilities
             List<string> menu = ManageBookingsOptions();
             List<string> passengerData = BookFlightUtilities.ValidateAccount("Login for Manage Bookings");
             Passenger? passenger = null;
-            do
-            {
-                passenger = PassengerRepository.ValidateAccount(passengerData[0], passengerData[1]);
-            } while (passenger == null);
 
-            string manageBookings;
-            do
+            passenger = PassengerRepository.ValidateAccount(passengerData[0], passengerData[1]);
+            if (passenger != null)
             {
-                manageBookings = Utilities.ShowMenu(menu, $"You are {passenger.Name}");
-                LaunchManageBookingsSelection(manageBookings, passenger);
-            } while (manageBookings != "0");
+                string manageBookings;
+                do
+                {
+                    manageBookings = Utilities.ShowMenu(menu, $"You are {passenger.Name}");
+                    LaunchManageBookingsSelection(manageBookings, passenger);
+                } while (manageBookings != "0");
+            } else
+            {
+                Console.WriteLine("Error while validating your credentials");
+            }
         }
 
         private static string SelectBookingFromOptions()

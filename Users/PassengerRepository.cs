@@ -36,14 +36,17 @@ namespace AirportTicketBookingSystem.Users
 
         public static Booking CreateBooking(Flight flight, Passenger passenger, FlightAvailability flightAvailability)
         {
+            int lastUsedId = BookingRepository.UsedIds.Last();
             // creating booking object with passenger data
-            Booking booking = new(flight, flightAvailability, passenger);
+            Booking booking = new(lastUsedId + 1, flight, flightAvailability, passenger);
 
             // look for passenger and add the booking to its list of bookings.
             foreach (Passenger passenger1 in RegisteredPassengers)
             {
                 if (passenger1.Email.Equals(passenger.Email))
                 {
+                    BookingRepository.Bookings.Add(booking);
+                    BookingRepository.UsedIds.Add(booking.Id);
                     if (passenger1.Bookings != null)
                     {
 
@@ -58,10 +61,16 @@ namespace AirportTicketBookingSystem.Users
             return booking;
         }
 
-        public static List<Booking>? GetBookingsByPassenger(Passenger passenger)
+        public static List<Booking>? GetBookingsByPassenger1(Passenger passenger)
         {
             List<Booking>? bookings = new List<Booking>();
             bookings = RegisteredPassengers.Single(p => p.Email.Equals(passenger.Email)).Bookings;
+            return bookings;
+        }
+
+        public static List<Booking>? GetBookingsByPassenger(Passenger passenger)
+        {
+            List<Booking>? bookings = BookingRepository.Bookings.Where(b => b.Passenger.Email.Equals(passenger.Email)).ToList();
             return bookings;
         }
     }
