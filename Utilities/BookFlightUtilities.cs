@@ -30,7 +30,7 @@ namespace AirportTicketBookingSystem.Utilities
                     List<string> passengerData = CreateAccount("Creating Account");
                     Passenger createdPassengerAccount = PassengerRepository.CreateAccount(passengerData[0], passengerData[1], passengerData[2]);
 
-                    MakeCompleteBooking(flightsOption, createdPassengerAccount);
+                    MakeCompleteBooking(flightsOption, createdPassengerAccount, false);
 
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
@@ -44,7 +44,7 @@ namespace AirportTicketBookingSystem.Utilities
                     if (validatedPassengerAccount != null)
                     {
                         Console.WriteLine("Passenger validated: " + validatedPassengerAccount);
-                        MakeCompleteBooking(flightsOption, validatedPassengerAccount);
+                        MakeCompleteBooking(flightsOption, validatedPassengerAccount, false);
                     }
                     else
                     {
@@ -134,7 +134,7 @@ namespace AirportTicketBookingSystem.Utilities
             return passengerData;
         }
 
-        private static List<string> ValidateAccount(string option)
+        public static List<string> ValidateAccount(string option)
         {
             List<string> passengerData = [];
             string? email = string.Empty; ;
@@ -207,14 +207,13 @@ namespace AirportTicketBookingSystem.Utilities
             return flight;
         }
 
-        private static FlightAvailability SelectingFlightAvailabilityToBook(Flight flight, Passenger passenger)
+        private static FlightAvailability SelectingFlightAvailabilityToBook(Flight flight, Passenger passenger, bool modifyBooking, string? bookingNumberToModify = null)
         {
             Console.WriteLine();
             FlightAvailability? flightAvailability = null;
             do
             {
                 string classSelected = Utilities.ShowMenu(SearchFlightUtilities.MenuOfFlightClasses(), "Now write the number of the Flight Class you want to book");
-                //Console.Write("Please write the number of the class you want to book: ");
                 if (classSelected != null)
                 {
                     bool validClassNumber = int.TryParse(classSelected, out int numericalClassNumber);
@@ -224,7 +223,15 @@ namespace AirportTicketBookingSystem.Utilities
                         if (flightAvailability != null)
                         {
                             // make the booking
-                            PassengerRepository.CreateBooking(passenger, flightAvailability);
+                            if (modifyBooking && bookingNumberToModify != null)
+                            {
+                                ManageBookingsUtilities.ModifyBooking(bookingNumberToModify, passenger, flight, flightAvailability);
+                            }
+                            else
+                            {
+                                PassengerRepository.CreateBooking(flight, passenger, flightAvailability);
+
+                            }
                         }
                         else
                         {
@@ -237,13 +244,13 @@ namespace AirportTicketBookingSystem.Utilities
             return flightAvailability;
         }
 
-        private static void MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount)
+        public static void MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount, bool modifyBooking, string? bookingNumberToModify = null)
         {
             // select the flight
             Flight selectedFlight = SelectingFlightToBook(flightsOption);
 
             // select the class
-            FlightAvailability flightAvailability = SelectingFlightAvailabilityToBook(selectedFlight, createdPassengerAccount);
+            FlightAvailability flightAvailability = SelectingFlightAvailabilityToBook(selectedFlight, createdPassengerAccount, modifyBooking, bookingNumberToModify);
 
             Console.WriteLine("******************************************************");
             Console.WriteLine("*********You flight was booked successfully!**********");

@@ -37,8 +37,7 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Manage Bookings
                 case "2":
-                    List<string> options = ManageBookingsOptions();
-                    string manageBookingsSelection = Utilities.ShowMenu(options);
+                    ShowAndLaunchManageBookingsMenu();
 
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
@@ -84,13 +83,15 @@ namespace AirportTicketBookingSystem.Utilities
             return menu;
         }
 
-        private static void LaunchManageBookingsSelection(string selection)
+        private static void LaunchManageBookingsSelection(string selection, Passenger passenger)
         {
             switch (selection)
             {
                 // Cancel Booking
                 case "1":
-                    // Pending functionality
+                    ManageBookingsUtilities.ViewMyBookings(passenger);
+                    string selectedBooking = SelectBookingFromOptions();
+                    ManageBookingsUtilities.CancelBooking(selectedBooking, passenger);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -98,7 +99,9 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // Modify Booking
                 case "2":
-                    // Pending functionality
+                    ManageBookingsUtilities.ViewMyBookings(passenger);
+                    string selectedBookingToModify = SelectBookingFromOptions();
+                    BookFlightUtilities.MakeCompleteBooking(FlightsInventory.Flights, passenger, true, selectedBookingToModify);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -106,7 +109,7 @@ namespace AirportTicketBookingSystem.Utilities
 
                 // View my Bookings
                 case "3":
-                    // Pending functionality
+                    ManageBookingsUtilities.ViewMyBookings(passenger);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -126,13 +129,30 @@ namespace AirportTicketBookingSystem.Utilities
         public static void ShowAndLaunchManageBookingsMenu()
         {
             List<string> menu = ManageBookingsOptions();
-
-            string manageBookings = string.Empty;
+            List<string> passengerData = BookFlightUtilities.ValidateAccount("Login for Manage Bookings");
+            Passenger? passenger = null;
             do
             {
-                manageBookings = Utilities.ShowMenu(menu);
-                LaunchManageBookingsSelection(manageBookings);
+                passenger = PassengerRepository.ValidateAccount(passengerData[0], passengerData[1]);
+            } while (passenger == null);
+
+            string manageBookings;
+            do
+            {
+                manageBookings = Utilities.ShowMenu(menu, $"You are {passenger.Name}");
+                LaunchManageBookingsSelection(manageBookings, passenger);
             } while (manageBookings != "0");
+        }
+
+        private static string SelectBookingFromOptions()
+        {
+            string? selectedBooking;
+            do
+            {
+                Console.WriteLine("Please write the booking number: ");
+                selectedBooking = Console.ReadLine();
+            } while (selectedBooking == null);
+            return selectedBooking;
         }
     }
 }

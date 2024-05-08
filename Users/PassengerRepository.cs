@@ -9,7 +9,7 @@ namespace AirportTicketBookingSystem.Users
 {
     public static class PassengerRepository
     {
-        private static readonly List<Passenger> RegisteredPassengers = [];
+        public static readonly List<Passenger> RegisteredPassengers = [];
         public static Passenger CreateAccount(string passengerName, string passengerEmail, string passengerPassword)
         {
             Passenger passenger = new(passengerName, passengerEmail, passengerPassword);
@@ -34,10 +34,10 @@ namespace AirportTicketBookingSystem.Users
 
         }
 
-        public static Booking CreateBooking(Passenger passenger, FlightAvailability flightAvailability)
+        public static Booking CreateBooking(Flight flight, Passenger passenger, FlightAvailability flightAvailability)
         {
             // creating booking object with passenger data
-            Booking booking = new(flightAvailability, passenger);
+            Booking booking = new(flight, flightAvailability, passenger);
 
             // look for passenger and add the booking to its list of bookings.
             foreach (Passenger passenger1 in RegisteredPassengers)
@@ -56,6 +56,13 @@ namespace AirportTicketBookingSystem.Users
                 }
             }
             return booking;
+        }
+
+        public static List<Booking>? GetBookingsByPassenger(Passenger passenger)
+        {
+            List<Booking>? bookings = new List<Booking>();
+            bookings = RegisteredPassengers.Single(p => p.Email.Equals(passenger.Email)).Bookings;
+            return bookings;
         }
     }
 }

@@ -9,10 +9,12 @@ namespace AirportTicketBookingSystem.FlightManagement
 {
     public class Booking
     {
+        public Flight Flight { get; set; }
         public FlightAvailability FlightAvailability { get; set; }
         public Passenger Passenger { get; set; }
-        public Booking(FlightAvailability flightAvailability, Passenger passenger)
+        public Booking(Flight flight,FlightAvailability flightAvailability, Passenger passenger)
         {
+            Flight = flight;
             FlightAvailability = flightAvailability;
             Passenger = passenger;
         }
@@ -21,6 +23,7 @@ namespace AirportTicketBookingSystem.FlightManagement
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"Passenger: {Passenger.Name}");
+            stringBuilder.AppendLine($"Flight: {Flight.ShowFlightShort(Flight)}");
             stringBuilder.Append($"Flight Class: {FlightAvailability.FlightClass.ToString()}");
             stringBuilder.Append($" Price: {FlightAvailability.Price}");
 
