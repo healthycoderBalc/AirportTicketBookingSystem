@@ -1,19 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AirportTicketBookingSystem.CustomValidation;
 using AirportTicketBookingSystem.Users;
 
 namespace AirportTicketBookingSystem.FlightManagement
 {
     public class Flight
     {
+        [Required(ErrorMessage = "The Flight Id should be provided")]
+        [Display(Name = "Flight Identificator")]
+        [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "The Departure date should be provided")]
+        [Display(Name = "Departure Date")]
+        [DateMoreThanOrEqualToToday(ErrorMessage = "The departure date must be equal or greater than today")]
         public DateTime DepartureDate { get; set; }
+
+        [Required]
         public Airport DepartureAirport { get; set; }
+        
+        [Required]
         public Airport ArrivalAirport { get; set; }
+
+        [AtLeastOneElementInList(ErrorMessage = "At least a person is required")]
         public List<FlightAvailability> FlightAvailabilities { get; set; }
+        public Flight() { }
 
         public Flight(int id, DateTime departureDate, Airport departureAirport, Airport arrivalAirport, List<FlightAvailability> flightAvailabilities)
         {
@@ -23,6 +39,7 @@ namespace AirportTicketBookingSystem.FlightManagement
             ArrivalAirport = arrivalAirport;
             FlightAvailabilities = flightAvailabilities;
         }
+
 
         public override string ToString()
         {

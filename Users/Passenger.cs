@@ -31,5 +31,13 @@ namespace AirportTicketBookingSystem.Users
 
             return stringBuilder.ToString();
         }
+
+        public static string SaveToFile(Passenger p)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"{p.Id};{p.Name};{p.Email}");
+
+            return stringBuilder.ToString();
+        }
     }
 }

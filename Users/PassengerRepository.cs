@@ -1,4 +1,6 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.Utilities.LoadingUtilities;
+using AirportTicketBookingSystem.Utilities.StorageUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +35,8 @@ namespace AirportTicketBookingSystem.Users
             int lastUsedId = PassengerRepository.UsedIds.Last();
             Passenger passenger = new(lastUsedId + 1, passengerName, passengerEmail, passengerPassword);
             RegisteredPassengers.Add(passenger);
-            UsedIds.Add(lastUsedId+1);
+            UsedIds.Add(lastUsedId + 1);
+
             return passenger;
         }
 
@@ -92,6 +95,28 @@ namespace AirportTicketBookingSystem.Users
         {
             List<Booking>? bookings = BookingRepository.Bookings.Where(b => b.Passenger.Email.Equals(passenger.Email)).ToList();
             return bookings;
+        }
+
+        public static void SaveAllPassengers()
+        {
+            StoragePassengerUtilities storagePassengerUtilities = new StoragePassengerUtilities();
+            List<Passenger> passengers = new List<Passenger>();
+
+            if (RegisteredPassengers != null)
+            {
+                foreach (var p in RegisteredPassengers)
+                {
+                    if (p != null)
+                    {
+                        passengers.Add(p);
+                    }
+                }
+                if (passengers.Count > 0)
+                {
+                    storagePassengerUtilities.SavePassengersToFile(passengers);
+                }
+            }
+
         }
     }
 }

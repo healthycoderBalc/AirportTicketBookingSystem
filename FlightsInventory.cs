@@ -16,6 +16,8 @@ namespace AirportTicketBookingSystem
         public static List<Country> Countries = new List<Country>();
         public static List<Airport> Airports = new List<Airport>();
 
+    
+
         // ******************************************
         // Load Data
         // ******************************************
@@ -41,8 +43,8 @@ namespace AirportTicketBookingSystem
 
         public static void LoadAirports()
         {
-            List<string> ArgentinaAirportNames = ["Aeroparque", "Ezeiza", "Olaya Herrera"];
-            List<string> ColombiaAirportNames = ["El Dorado", "Puente Aereo", "Ing. Ambrosio"];
+            List<string> ArgentinaAirportNames = ["Aeroparque", "Ezeiza", "Ing. Ambrosio"];
+            List<string> ColombiaAirportNames = ["El Dorado", "Puente Aereo", "Olaya Herrera"];
             List<string> ChileAirportNames = ["Santiago", "Araucania", "Arturo Merino Benitez"];
 
             foreach (Country country in Countries)

@@ -32,5 +32,13 @@ namespace AirportTicketBookingSystem.FlightManagement
 
             return stringBuilder.ToString();
         }
+
+        public static string SaveToFile(Booking b)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"{b.Id};{b.Flight.Id};{(int)b.FlightAvailability.FlightClass};{b.Passenger.Id}");
+
+            return stringBuilder.ToString();
+        }
     }
 }

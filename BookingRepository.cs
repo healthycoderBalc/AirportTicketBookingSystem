@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.FlightManagement;
 using AirportTicketBookingSystem.Users;
+using AirportTicketBookingSystem.Utilities.StorageUtilities;
 
 namespace AirportTicketBookingSystem
 {
@@ -87,6 +88,27 @@ namespace AirportTicketBookingSystem
         {
             List<Booking> bookingsResult = Bookings.Where(b => b.FlightAvailability.FlightClass.Equals((FlightClass)flightClass-1)).ToList();
             return bookingsResult;
+        }
+        public static void SaveAllBookings()
+        {
+            StorageBookingUtilities storageBookingUtilities = new StorageBookingUtilities();
+            List<Booking> bookings = new List<Booking>();
+
+            if (Bookings != null)
+            {
+                foreach (var b in Bookings)
+                {
+                    if (b != null)
+                    {
+                        bookings.Add(b);
+                    }
+                }
+                if (bookings.Count > 0)
+                {
+                    storageBookingUtilities.SaveBookingsToFile(bookings);
+                }
+            }
+
         }
     }
 }

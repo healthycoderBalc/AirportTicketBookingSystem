@@ -12,14 +12,13 @@ namespace AirportTicketBookingSystem
 
         public static void Main(string[] args)
         {
-            FlightsInventory.LoadFlightsData();
-            
+            //FlightsInventory.LoadFlightsData();
             ShowAndLaunchUserTypeMenu();
         }
 
         private static void ShowAndLaunchUserTypeMenu()
         {
-          List<string> menu = Utilities.Utilities.UserTypeOptions();
+            List<string> menu = Utilities.Utilities.UserTypeOptions();
 
             string userTypeSelection = string.Empty;
             do

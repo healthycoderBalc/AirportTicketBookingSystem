@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,10 @@ namespace AirportTicketBookingSystem.FlightManagement
 {
     public class Airport
     {
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public Country Country { get; set; }
 
         public Airport(string name, Country country)
