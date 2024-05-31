@@ -63,24 +63,28 @@ namespace AirportTicketBookingSystem.Users
             // creating booking object with passenger data
             Booking booking = new(lastUsedId + 1, flight, flightAvailability, passenger);
 
-            // look for passenger and add the booking to its list of bookings.
-            foreach (Passenger passenger1 in RegisteredPassengers)
+            if (!RegisteredPassengers.Contains(passenger))
             {
-                if (passenger1.Email.Equals(passenger.Email))
-                {
-                    BookingRepository.Bookings.Add(booking);
-                    BookingRepository.UsedIds.Add(booking.Id);
-                    if (passenger1.Bookings != null)
-                    {
-
-                        passenger1.Bookings.Add(booking);
-                    }
-                    else
-                    {
-                        passenger1.Bookings = [booking];
-                    }
-                }
+                throw new InvalidOperationException("Passenger is not registered.");
             }
+            // look for passenger and add the booking to its list of bookings.
+            //foreach (Passenger passenger1 in RegisteredPassengers)
+            //{
+            //    if (passenger1.Email.Equals(passenger.Email))
+            //    {
+            BookingRepository.Bookings.Add(booking);
+            BookingRepository.UsedIds.Add(booking.Id);
+            if (passenger.Bookings != null)
+            {
+                passenger.Bookings.Add(booking);
+            }
+            else
+            {
+                passenger.Bookings = [booking];
+            }
+            //    }
+            //}
+
             return booking;
         }
 
