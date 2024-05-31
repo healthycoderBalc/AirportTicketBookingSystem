@@ -7,8 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Utilities\ManagerUtilities.cs~RF709d1a.TMP" />
-  </ItemGroup>
-
 </Project>

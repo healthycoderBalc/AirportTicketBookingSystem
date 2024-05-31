@@ -18,7 +18,7 @@ namespace AirportTicketBookingSystem.FlightManagement
         public double Price { get; set; }
 
         [Required(ErrorMessage = "The Total Places is required")]
-        [Range(1, double.MaxValue, ErrorMessage = "The Total Places cannot 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "The Total Places cannot 0")]
         public int TotalPlaces { get; set; }
 
         [Required(ErrorMessage = "The Available Places is required")]

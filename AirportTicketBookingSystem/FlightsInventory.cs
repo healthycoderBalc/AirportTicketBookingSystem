@@ -16,7 +16,7 @@ namespace AirportTicketBookingSystem
         public static List<Country> Countries = new List<Country>();
         public static List<Airport> Airports = new List<Airport>();
 
-    
+
 
         // ******************************************
         // Load Data
@@ -160,6 +160,27 @@ namespace AirportTicketBookingSystem
                 return [];
             }
         }
+
+        public static List<Flight> SearchFlightsByCountryName(List<Flight> flightsToSearch, string countryName, bool departure)
+        {
+
+            IEnumerable<Flight> resultSearch =
+               flightsToSearch.Where(flight =>
+               {
+                   if (departure)
+                   {
+                       return (flight.DepartureAirport.Country.Name == countryName);
+                   }
+                   else
+                   {
+                       return (flight.ArrivalAirport.Country.Name == countryName);
+                   }
+
+               });
+            return resultSearch.ToList();
+
+        }
+
 
 
         public static List<Flight> SearchFlightsByClass(List<Flight> flightsToSearch, int fcNumber)
