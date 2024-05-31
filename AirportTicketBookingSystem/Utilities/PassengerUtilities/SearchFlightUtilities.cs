@@ -93,7 +93,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 // Search By Departure Airport
                 case "5":
                     string departureAirport = SearchBy("Departure Airport");
-                    searchedListOfFlights = FlightsInventory.SearchFlightsByAirportOrCountryName(searchedListOfFlights, "DepartureAirport", departureAirport, false);
+                    searchedListOfFlights = FlightsInventory.SearchFlightsByAirportName(searchedListOfFlights, departureAirport, true);
                     FlightsInventory.ShowFlights(searchedListOfFlights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
@@ -105,7 +105,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 // Search By Arrival Airport
                 case "6":
                     string arrivalAirport = SearchBy("Arrival Airport");
-                    searchedListOfFlights = FlightsInventory.SearchFlightsByAirportOrCountryName(searchedListOfFlights, "ArrivalAirport", arrivalAirport, false);
+                    searchedListOfFlights = FlightsInventory.SearchFlightsByAirportName(searchedListOfFlights, arrivalAirport, false);
                     FlightsInventory.ShowFlights(searchedListOfFlights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");

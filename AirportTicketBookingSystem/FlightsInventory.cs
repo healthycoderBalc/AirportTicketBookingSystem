@@ -161,6 +161,23 @@ namespace AirportTicketBookingSystem
             }
         }
 
+        public static List<Flight> SearchFlightsByAirportName(List<Flight> flightsToSearch, string airportName, bool departure)
+        {
+            if (flightsToSearch == null || string.IsNullOrWhiteSpace(airportName))
+            {
+                return [];
+            }
+
+            IEnumerable<Flight> resultSearch =
+             flightsToSearch.Where(flight => {
+                 return departure
+                     ? flight.DepartureAirport.Name.Contains(airportName)
+                     : flight.ArrivalAirport.Name.Contains(airportName);
+             });
+
+            return resultSearch.ToList();
+        }
+
         public static List<Flight> SearchFlightsByCountryName(List<Flight> flightsToSearch, string countryName, bool departure)
         {
             if (flightsToSearch == null || string.IsNullOrWhiteSpace(countryName))

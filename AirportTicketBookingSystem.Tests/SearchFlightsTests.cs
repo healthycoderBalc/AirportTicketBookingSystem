@@ -41,7 +41,7 @@ namespace AirportTicketBookingSystem.Tests
             //Assert
             Assert.Single(filteredFlights);
             Assert.Contains(flight, filteredFlights);
-            Assert.Contains(flight.FlightAvailabilities, fa => fa.Price >= lowerSearchLimit && fa.Price <= upperSearchLimit);
+            Assert.Contains(filteredFlights[0].FlightAvailabilities, fa => fa.Price >= lowerSearchLimit && fa.Price <= upperSearchLimit);
         }
 
         [Theory]
@@ -73,7 +73,7 @@ namespace AirportTicketBookingSystem.Tests
             //Assert
             Assert.Single(filteredFlights);
             Assert.Contains(flight, filteredFlights);
-            Assert.Contains(departureCountry, flight.DepartureAirport.Country.Name);
+            Assert.Contains(departureCountry, filteredFlights[0].DepartureAirport.Country.Name);
         }
 
         [Theory]
@@ -105,9 +105,63 @@ namespace AirportTicketBookingSystem.Tests
             //Assert
             Assert.Single(filteredFlights);
             Assert.Contains(flight, filteredFlights);
-            Assert.Contains(arrivalCountry, flight.ArrivalAirport.Country.Name);
+            Assert.Contains(arrivalCountry, filteredFlights[0].ArrivalAirport.Country.Name);
         }
 
+        [Theory]
+        [InlineAutoData("El Dorado")]
+        [InlineAutoData("Ezeiza")]
+        [InlineAutoData()]
+        public void ShouldGetAFlightIfItsDepartureAirportIs(string departureAirportName)
+        {
+            //Arrange
+            var fixture = new Fixture();
 
+            var airport = fixture.Build<Airport>()
+                .With(x => x.Name, departureAirportName)
+                .Create();
+
+            var flight = fixture.Build<Flight>()
+                .With(x => x.DepartureAirport, airport)
+                .Create();
+
+            var flights = new List<Flight> { flight };
+
+            //Act
+            var filteredFlights = FlightsInventory.SearchFlightsByAirportName(flights, departureAirportName, true);
+
+            //Assert
+            Assert.Single(filteredFlights);
+            Assert.Contains(flight, filteredFlights);
+            Assert.Contains(departureAirportName, filteredFlights[0].DepartureAirport.Name);
+        }
+
+        [Theory]
+        [InlineAutoData("El Dorado")]
+        [InlineAutoData("Ezeiza")]
+        [InlineAutoData()]
+        public void ShouldGetAFlightIfItsArrivalAirportIs(string arrivalAirportName)
+        {
+            //Arrange
+            var fixture = new Fixture();
+
+            var airport = fixture.Build<Airport>()
+                .With(x => x.Name, arrivalAirportName)
+                .Create();
+
+            var flight = fixture.Build<Flight>()
+                .With(x => x.ArrivalAirport, airport)
+                .Create();
+
+            var flights = new List<Flight> { flight };
+
+            //Act
+            var filteredFlights = FlightsInventory.SearchFlightsByAirportName(flights, arrivalAirportName, false);
+
+            //Assert
+            Assert.Single(filteredFlights);
+            Assert.Contains(flight, filteredFlights);
+            Assert.Contains(arrivalAirportName, filteredFlights[0].ArrivalAirport.Name);
+        }
     }
 }
