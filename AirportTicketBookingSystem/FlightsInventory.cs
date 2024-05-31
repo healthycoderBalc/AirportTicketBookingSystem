@@ -163,22 +163,19 @@ namespace AirportTicketBookingSystem
 
         public static List<Flight> SearchFlightsByCountryName(List<Flight> flightsToSearch, string countryName, bool departure)
         {
+            if (flightsToSearch == null || string.IsNullOrWhiteSpace(countryName))
+            {
+                return [];
+            }
 
             IEnumerable<Flight> resultSearch =
-               flightsToSearch.Where(flight =>
-               {
-                   if (departure)
-                   {
-                       return (flight.DepartureAirport.Country.Name == countryName);
-                   }
-                   else
-                   {
-                       return (flight.ArrivalAirport.Country.Name == countryName);
-                   }
+             flightsToSearch.Where(flight => {
+                 return departure
+                     ? flight.DepartureAirport.Country.Name.Contains(countryName)
+                     : flight.ArrivalAirport.Country.Name.Contains(countryName);
+             });
 
-               });
             return resultSearch.ToList();
-
         }
 
 

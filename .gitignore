@@ -227,6 +227,7 @@ bin/Debug/*
 obj/Debug/*
 
 .vs/*
+.vs/AirportTicketBookingSystem/*
 
 obj/*
 

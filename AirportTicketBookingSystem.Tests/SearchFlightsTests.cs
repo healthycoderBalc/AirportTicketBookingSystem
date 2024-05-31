@@ -73,7 +73,7 @@ namespace AirportTicketBookingSystem.Tests
             //Assert
             Assert.Single(filteredFlights);
             Assert.Contains(flight, filteredFlights);
-            Assert.Equal(departureCountry, flight.DepartureAirport.Country.Name);
+            Assert.Contains(departureCountry, flight.DepartureAirport.Country.Name);
         }
 
         [Theory]
@@ -105,7 +105,7 @@ namespace AirportTicketBookingSystem.Tests
             //Assert
             Assert.Single(filteredFlights);
             Assert.Contains(flight, filteredFlights);
-            Assert.Equal(arrivalCountry, flight.ArrivalAirport.Country.Name);
+            Assert.Contains(arrivalCountry, flight.ArrivalAirport.Country.Name);
         }
 
 
