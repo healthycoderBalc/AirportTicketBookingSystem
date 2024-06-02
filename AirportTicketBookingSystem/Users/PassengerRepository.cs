@@ -77,32 +77,20 @@ namespace AirportTicketBookingSystem.Users
             {
                 throw new InvalidOperationException("That Flight Class does not exist in the selected flight.");
             }
-            // look for passenger and add the booking to its list of bookings.
-            //foreach (Passenger passenger1 in RegisteredPassengers)
-            //{
-            //    if (passenger1.Email.Equals(passenger.Email))
-            //    {
+        
             BookingRepository.Bookings.Add(booking);
             BookingRepository.UsedIds.Add(booking.Id);
-            if (passenger.Bookings != null)
-            {
-                passenger.Bookings.Add(booking);
-            }
-            else
-            {
-                passenger.Bookings = [booking];
-            }
-            //    }
+
+            //if (passenger.Bookings != null)
+            //{
+            //    passenger.Bookings.Add(booking);
+            //}
+            //else
+            //{
+            //    passenger.Bookings = [booking];
             //}
 
             return booking;
-        }
-
-        public static List<Booking>? GetBookingsByPassenger1(Passenger passenger)
-        {
-            List<Booking>? bookings = new List<Booking>();
-            bookings = RegisteredPassengers.Single(p => p.Email.Equals(passenger.Email)).Bookings;
-            return bookings;
         }
 
         public static List<Booking>? GetBookingsByPassenger(Passenger passenger)

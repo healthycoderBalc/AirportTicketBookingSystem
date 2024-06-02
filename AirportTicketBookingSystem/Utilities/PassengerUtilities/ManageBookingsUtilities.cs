@@ -23,18 +23,24 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                     // booking belongs to passenger
                     // remove from booking repository and from passenger bookings
                     BookingRepository.Bookings.Remove(BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                    foreach (Users.Passenger p in PassengerRepository.RegisteredPassengers)
-                    {
-                        if (p.Email.Equals(passenger.Email))
-                        {
-                            p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                            Console.WriteLine();
-                            Console.WriteLine("***********************************************************");
-                            Console.WriteLine($"Booking number {numericalBookingNumber} has been Canceled!");
-                            Console.WriteLine("***********************************************************");
-                            Console.WriteLine();
-                        }
-                    }
+                    Console.WriteLine();
+                    Console.WriteLine("***********************************************************");
+                    Console.WriteLine($"Booking number {numericalBookingNumber} has been Canceled!");
+                    Console.WriteLine("***********************************************************");
+                    Console.WriteLine();
+
+                    //foreach (Users.Passenger p in PassengerRepository.RegisteredPassengers)
+                    //{
+                    //    if (p.Email.Equals(passenger.Email))
+                    //    {
+                    //        p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
+                    //        Console.WriteLine();
+                    //        Console.WriteLine("***********************************************************");
+                    //        Console.WriteLine($"Booking number {numericalBookingNumber} has been Canceled!");
+                    //        Console.WriteLine("***********************************************************");
+                    //        Console.WriteLine();
+                    //    }
+                    //}
 
                 }
                 else
@@ -60,19 +66,24 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                     // remove and replace from booking repository and from passenger bookings
                     BookingRepository.Bookings.Remove(BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
                     BookingRepository.Bookings.Add(booking);
-                    foreach (Passenger p in PassengerRepository.RegisteredPassengers)
-                    {
-                        if (p.Email.Equals(passenger.Email))
-                        {
-                            p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                            p.Bookings?.Add(booking);
-                            Console.WriteLine();
-                            Console.WriteLine("***********************************************************");
-                            Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
-                            Console.WriteLine("***********************************************************");
-                            Console.WriteLine();
-                        }
-                    }
+                    Console.WriteLine();
+                    Console.WriteLine("***********************************************************");
+                    Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
+                    Console.WriteLine("***********************************************************");
+                    Console.WriteLine();
+                    //foreach (Passenger p in PassengerRepository.RegisteredPassengers)
+                    //{
+                    //    if (p.Email.Equals(passenger.Email))
+                    //    {
+                    //        p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
+                    //        p.Bookings?.Add(booking);
+                    //        Console.WriteLine();
+                    //        Console.WriteLine("***********************************************************");
+                    //        Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
+                    //        Console.WriteLine("***********************************************************");
+                    //        Console.WriteLine();
+                    //    }
+                    //}
 
                 }
                 else

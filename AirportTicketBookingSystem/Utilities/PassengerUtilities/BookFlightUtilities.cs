@@ -257,7 +257,8 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             Console.WriteLine("******************************************************");
 
             Console.WriteLine(selectedFlight);
-            Console.WriteLine(createdPassengerAccount?.Bookings?.Last());
+            Booking lastBooking = BookingRepository.Bookings.Last(b => b.Passenger.Id.Equals(createdPassengerAccount.Id)) as Booking;
+            Console.WriteLine(lastBooking);
         }
     }
 }

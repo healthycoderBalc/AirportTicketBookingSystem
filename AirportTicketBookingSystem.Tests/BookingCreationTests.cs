@@ -49,16 +49,15 @@ namespace AirportTicketBookingSystem.Tests
             var passenger = _fixture.Create<Passenger>();
             PassengerRepository.RegisteredPassengers.Add(passenger);
 
-            passenger.Bookings?.Clear();
+            BookingRepository.Bookings.Clear();
 
             //Act
             var bookingCreated = PassengerRepository.CreateBooking(flight, passenger, flightAvailability);
 
             //Assert
-            List<Booking>? bookings = passenger.Bookings;
-            Assert.Single(bookings);
-            Assert.True(PassengerRepository.RegisteredPassengers.Count > 0);
-            Assert.True(passenger?.Bookings?.Count > 0);
+            Assert.Single(BookingRepository.Bookings);
+            Assert.Single(PassengerRepository.RegisteredPassengers);
+            Assert.Equal(passenger, BookingRepository.Bookings[0].Passenger);
         }
 
         [Fact]
@@ -107,7 +106,7 @@ namespace AirportTicketBookingSystem.Tests
             var passenger = _fixture.Create<Passenger>();
             PassengerRepository.RegisteredPassengers.Add(passenger);
 
-            passenger.Bookings?.Clear();
+            BookingRepository.Bookings.Clear();
 
             //Act
             //Assert
@@ -147,7 +146,7 @@ namespace AirportTicketBookingSystem.Tests
             var passenger = _fixture.Create<Passenger>();
             PassengerRepository.RegisteredPassengers.Add(passenger);
 
-            passenger.Bookings?.Clear();
+            BookingRepository.Bookings.Clear();
 
             //Act
             //Assert
