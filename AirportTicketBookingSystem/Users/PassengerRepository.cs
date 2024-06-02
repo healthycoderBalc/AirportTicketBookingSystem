@@ -67,6 +67,16 @@ namespace AirportTicketBookingSystem.Users
             {
                 throw new InvalidOperationException("Passenger is not registered.");
             }
+
+            if (!FlightsInventory.Flights.Contains(flight))
+            {
+                throw new InvalidOperationException("Flight does not exist.");
+            }
+
+            if (!flight.FlightAvailabilities.Contains(flightAvailability))
+            {
+                throw new InvalidOperationException("That Flight Class does not exist in the selected flight.");
+            }
             // look for passenger and add the booking to its list of bookings.
             //foreach (Passenger passenger1 in RegisteredPassengers)
             //{

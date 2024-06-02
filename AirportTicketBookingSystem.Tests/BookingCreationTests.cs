@@ -43,8 +43,10 @@ namespace AirportTicketBookingSystem.Tests
                 .With(f => f.FlightAvailabilities, flightAvailabilities)
                 .Create();
 
+            FlightsInventory.Flights.Add(flight);
+
             PassengerRepository.RegisteredPassengers.Clear();
-            var passenger =  _fixture.Create<Passenger>();
+            var passenger = _fixture.Create<Passenger>();
             PassengerRepository.RegisteredPassengers.Add(passenger);
 
             passenger.Bookings?.Clear();
@@ -72,6 +74,8 @@ namespace AirportTicketBookingSystem.Tests
                 .With(f => f.FlightAvailabilities, flightAvailabilities)
                 .Create();
 
+            FlightsInventory.Flights.Add(flight);
+
             PassengerRepository.RegisteredPassengers.Clear();
             var unregisteredPassenger = _fixture.Create<Passenger>();
 
@@ -82,5 +86,75 @@ namespace AirportTicketBookingSystem.Tests
                 () => PassengerRepository.CreateBooking(flight, unregisteredPassenger, flightAvailability));
             Assert.Equal("Passenger is not registered.", exception.Message);
         }
+
+
+        [Fact]
+        public void ShouldThrowExeptionIfInvalidFlight()
+        {
+            //Arrange
+            var flightAvailability = _fixture.Build<FlightAvailability>()
+                .Create();
+
+            var flightAvailabilities = new List<FlightAvailability> { flightAvailability };
+
+            var invalidFlight = _fixture.Build<Flight>()
+                .With(f => f.FlightAvailabilities, flightAvailabilities)
+                .Create();
+
+            FlightsInventory.Flights.Clear();
+
+            PassengerRepository.RegisteredPassengers.Clear();
+            var passenger = _fixture.Create<Passenger>();
+            PassengerRepository.RegisteredPassengers.Add(passenger);
+
+            passenger.Bookings?.Clear();
+
+            //Act
+            //Assert
+            Assert.Empty(FlightsInventory.Flights);
+            var exception = Assert.Throws<InvalidOperationException>(
+                () => PassengerRepository.CreateBooking(invalidFlight, passenger, flightAvailability));
+            Assert.Equal("Flight does not exist.", exception.Message);
+        }
+
+        [Theory]
+        [InlineAutoData(FlightClass.Economy)]
+        [InlineAutoData(FlightClass.Business)]
+        [InlineAutoData(FlightClass.FirstClass)]
+        public void ShouldThrowExeptionIfInvalidFlightClass(FlightClass flightClass)
+        {
+            //Arrange
+            var flightAvailability = _fixture.Build<FlightAvailability>()
+                .With(x => x.FlightClass, flightClass)
+                .Create();
+
+            var differentFlightClass = Enum.GetValues(typeof(FlightClass))
+                .Cast<FlightClass>()
+                .First(fc => fc != flightClass);
+
+            var differentFlightAvailability = _fixture.Build<FlightAvailability>()
+                .With(x => x.FlightClass, differentFlightClass)
+                .Create();
+
+            var flight = _fixture.Build<Flight>()
+                .With(x => x.FlightAvailabilities, new List<FlightAvailability> { differentFlightAvailability })
+                .Create();
+
+            FlightsInventory.Flights.Add(flight);
+
+
+            PassengerRepository.RegisteredPassengers.Clear();
+            var passenger = _fixture.Create<Passenger>();
+            PassengerRepository.RegisteredPassengers.Add(passenger);
+
+            passenger.Bookings?.Clear();
+
+            //Act
+            //Assert
+            var exception = Assert.Throws<InvalidOperationException>(
+                () => PassengerRepository.CreateBooking(flight, passenger, flightAvailability));
+            Assert.Equal("That Flight Class does not exist in the selected flight.", exception.Message);
+        }
+
     }
 }
