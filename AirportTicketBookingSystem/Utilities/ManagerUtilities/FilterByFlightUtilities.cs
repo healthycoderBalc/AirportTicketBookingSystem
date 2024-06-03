@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,19 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 {
-    public static class FilterByFlightUtilities
+    public class FilterByFlightUtilities
     {
-        public static int GetSelectedFlightId()
+        private readonly IFlightsInventory _flightsInventory;
+
+        public FilterByFlightUtilities(IFlightsInventory flightsInventory)
+        {
+            _flightsInventory = flightsInventory;
+        }
+
+        public int GetSelectedFlightId()
         {
             Console.WriteLine();
-            FlightsInventory.ShowFlights(FlightsInventory.Flights);
+            FlightsInventory.ShowFlights(_flightsInventory.Flights);
             bool validFlightNumber = false;
             int numericalFlightNumber;
             do

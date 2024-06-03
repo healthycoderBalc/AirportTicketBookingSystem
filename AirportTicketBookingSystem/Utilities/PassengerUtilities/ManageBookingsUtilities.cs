@@ -5,98 +5,85 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Users;
 using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 
 namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
-    public static class ManageBookingsUtilities
+    public class ManageBookingsUtilities
     {
-        public static void CancelBooking(string bookingNumber, Users.Passenger passenger)
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IPassengerRepository _passengerRepository;
+
+        public ManageBookingsUtilities(IBookingRepository bookingRepository, IPassengerRepository passengerRepository)
         {
-            List<Booking>? bookings = PassengerRepository.GetBookingsByPassenger(passenger);
-            bool validBookingNumber = int.TryParse(bookingNumber, out int numericalBookingNumber);
-
-            if (bookings != null && validBookingNumber)
-            {
-
-                if (BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)).Passenger.Email.Equals(passenger.Email))
-                {
-                    // booking belongs to passenger
-                    // remove from booking repository and from passenger bookings
-                    BookingRepository.Bookings.Remove(BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                    Console.WriteLine();
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine($"Booking number {numericalBookingNumber} has been Canceled!");
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine();
-
-                    //foreach (Users.Passenger p in PassengerRepository.RegisteredPassengers)
-                    //{
-                    //    if (p.Email.Equals(passenger.Email))
-                    //    {
-                    //        p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                    //        Console.WriteLine();
-                    //        Console.WriteLine("***********************************************************");
-                    //        Console.WriteLine($"Booking number {numericalBookingNumber} has been Canceled!");
-                    //        Console.WriteLine("***********************************************************");
-                    //        Console.WriteLine();
-                    //    }
-                    //}
-
-                }
-                else
-                {
-                    //booking does not belong to passenger
-                    Console.WriteLine("The booking number you have selected does not exist in your bookings");
-                }
-            }
+            _bookingRepository = bookingRepository;
+            _passengerRepository = passengerRepository;
         }
 
-        public static void ModifyBooking(string bookingNumber, Users.Passenger passenger, Flight flight, FlightAvailability flightAvailability)
+        public void CancelBooking(string bookingNumber, IPassenger passenger)
         {
-            List<Booking>? bookings = PassengerRepository.GetBookingsByPassenger(passenger);
-            bool validBookingNumber = int.TryParse(bookingNumber, out int numericalBookingNumber);
+            var booking = _bookingRepository.Bookings.Single(b => b.Id.ToString() == bookingNumber && b.Passenger.Id == passenger.Id);
 
-            Booking booking = new(numericalBookingNumber, flight, flightAvailability, passenger);
-
-
-            if (bookings != null && validBookingNumber)
+            if (booking == null)
             {
-                if (BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)).Passenger.Email.Equals(passenger.Email))
-                {
-                    // remove and replace from booking repository and from passenger bookings
-                    BookingRepository.Bookings.Remove(BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                    BookingRepository.Bookings.Add(booking);
-                    Console.WriteLine();
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
-                    Console.WriteLine("***********************************************************");
-                    Console.WriteLine();
-                    //foreach (Passenger p in PassengerRepository.RegisteredPassengers)
-                    //{
-                    //    if (p.Email.Equals(passenger.Email))
-                    //    {
-                    //        p.Bookings?.Remove(p.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
-                    //        p.Bookings?.Add(booking);
-                    //        Console.WriteLine();
-                    //        Console.WriteLine("***********************************************************");
-                    //        Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
-                    //        Console.WriteLine("***********************************************************");
-                    //        Console.WriteLine();
-                    //    }
-                    //}
-
-                }
-                else
-                {
-                    //booking does not belong to passenger
-                    Console.WriteLine("The booking number you have selected does not exist in your bookings");
-                }
+                throw new Exception("The booking number you have selected does not exist in your bookings");
             }
+
+            _bookingRepository.Bookings.Remove(booking);
+
+            Console.WriteLine();
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine($"Booking number {bookingNumber} has been Canceled!");
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine();
         }
 
-        public static void ViewMyBookings(Passenger passenger)
+        public void ModifyBooking(string bookingNumber, IPassenger passenger, Flight flight, FlightAvailability flightAvailability)
         {
-            List<Booking>? bookings = PassengerRepository.GetBookingsByPassenger(passenger);
+            var booking = _bookingRepository.Bookings.Single(b => b.Id.ToString() == bookingNumber && b.Passenger.Id == passenger.Id);
+            if (booking == null)
+            {
+                throw new Exception("The booking number you have selected does not exist in your bookings");
+            }
+
+            booking.Flight = flight;
+            booking.FlightAvailability = flightAvailability;
+
+            Console.WriteLine();
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine($"Booking number {bookingNumber} has been Modified!");
+            Console.WriteLine("***********************************************************");
+            Console.WriteLine();
+
+
+            //List<Booking>? bookings = PassengerRepository.GetBookingsByPassenger(passenger);
+            //bool validBookingNumber = int.TryParse(bookingNumber, out int numericalBookingNumber);
+
+            //Booking booking = new(numericalBookingNumber, flight, flightAvailability, passenger);
+
+
+            //if (bookings != null && validBookingNumber)
+            //{
+            //    if (BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)).Passenger.Email.Equals(passenger.Email))
+            //    {
+            //        BookingRepository.Bookings.Remove(BookingRepository.Bookings.Single(b => b.Id.Equals(numericalBookingNumber)));
+            //        BookingRepository.Bookings.Add(booking);
+            //        Console.WriteLine();
+            //        Console.WriteLine("***********************************************************");
+            //        Console.WriteLine($"Booking number {numericalBookingNumber} has been Modified!");
+            //        Console.WriteLine("***********************************************************");
+            //        Console.WriteLine();
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("The booking number you have selected does not exist in your bookings");
+            //    }
+            //}
+        }
+
+        public void ViewMyBookings(Passenger passenger)
+        {
+            List<Booking>? bookings = _bookingRepository.GetBookingsByPassenger(passenger);
             Console.WriteLine();
             Console.WriteLine("**************************************");
             Console.WriteLine("**********  Your Bookings ************");
@@ -106,9 +93,9 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             BookingRepository.PrintBookings(bookings);
         }
 
-        public static Booking? SelectBooking(string bookingNumber, Passenger passenger)
+        public Booking? SelectBooking(string bookingNumber, Passenger passenger)
         {
-            List<Booking>? bookings = PassengerRepository.GetBookingsByPassenger(passenger);
+            List<Booking>? bookings = _bookingRepository.GetBookingsByPassenger(passenger);
             bool validBookingNumber = int.TryParse(bookingNumber, out int numericalBookingNumber);
             Booking? booking = null;
 

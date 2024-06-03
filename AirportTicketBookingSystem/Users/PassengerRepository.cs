@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using AirportTicketBookingSystem.Utilities.LoadingUtilities;
 using AirportTicketBookingSystem.Utilities.StorageUtilities;
 using System;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Users
 {
-    public static class PassengerRepository
+    public class PassengerRepository : IPassengerRepository
     {
-        public static readonly List<Passenger> RegisteredPassengers = [];
-        public static List<int> UsedIds = new List<int>() { 0 };
+        public List<Passenger> RegisteredPassengers { get; } = [];
+        public List<int> UsedIds { get; } = new List<int>() { 0 };
 
-        public static void PrintAllRegisteredPassengers()
+        public void PrintAllRegisteredPassengers()
         {
             if (RegisteredPassengers == null)
             {
@@ -30,9 +31,9 @@ namespace AirportTicketBookingSystem.Users
             }
         }
 
-        public static Passenger CreateAccount(string passengerName, string passengerEmail, string passengerPassword)
+        public Passenger CreateAccount(string passengerName, string passengerEmail, string passengerPassword)
         {
-            int lastUsedId = PassengerRepository.UsedIds.Last();
+            int lastUsedId = UsedIds.Last();
             Passenger passenger = new(lastUsedId + 1, passengerName, passengerEmail, passengerPassword);
             RegisteredPassengers.Add(passenger);
             UsedIds.Add(lastUsedId + 1);
@@ -40,7 +41,7 @@ namespace AirportTicketBookingSystem.Users
             return passenger;
         }
 
-        public static Passenger? ValidateAccount(string passengerEmail, string passengerPassword)
+        public Passenger? ValidateAccount(string passengerEmail, string passengerPassword)
         {
             try
             {
@@ -57,49 +58,7 @@ namespace AirportTicketBookingSystem.Users
 
         }
 
-        public static Booking CreateBooking(Flight flight, Passenger passenger, FlightAvailability flightAvailability)
-        {
-            int lastUsedId = BookingRepository.UsedIds.Last();
-            // creating booking object with passenger data
-            Booking booking = new(lastUsedId + 1, flight, flightAvailability, passenger);
-
-            if (!RegisteredPassengers.Contains(passenger))
-            {
-                throw new InvalidOperationException("Passenger is not registered.");
-            }
-
-            if (!FlightsInventory.Flights.Contains(flight))
-            {
-                throw new InvalidOperationException("Flight does not exist.");
-            }
-
-            if (!flight.FlightAvailabilities.Contains(flightAvailability))
-            {
-                throw new InvalidOperationException("That Flight Class does not exist in the selected flight.");
-            }
-        
-            BookingRepository.Bookings.Add(booking);
-            BookingRepository.UsedIds.Add(booking.Id);
-
-            //if (passenger.Bookings != null)
-            //{
-            //    passenger.Bookings.Add(booking);
-            //}
-            //else
-            //{
-            //    passenger.Bookings = [booking];
-            //}
-
-            return booking;
-        }
-
-        public static List<Booking>? GetBookingsByPassenger(Passenger passenger)
-        {
-            List<Booking>? bookings = BookingRepository.Bookings.Where(b => b.Passenger.Email.Equals(passenger.Email)).ToList();
-            return bookings;
-        }
-
-        public static void SaveAllPassengers()
+        public void SaveAllPassengers()
         {
             StoragePassengerUtilities storagePassengerUtilities = new StoragePassengerUtilities();
             List<Passenger> passengers = new List<Passenger>();

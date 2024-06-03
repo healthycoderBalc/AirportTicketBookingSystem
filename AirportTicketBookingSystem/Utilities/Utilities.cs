@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using AirportTicketBookingSystem.Users;
 using AirportTicketBookingSystem.Utilities.ManagerUtilities;
 using AirportTicketBookingSystem.Utilities.PassengerUtilities;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 
 namespace AirportTicketBookingSystem.Utilities
 {
-    internal class Utilities
+    public class Utilities : IUtilities
     {
-        internal static string ShowMenu(List<string> options, string? title = null)
+
+        public string ShowMenu(List<string> options, string? title = null)
         {
             Console.WriteLine();
             if (!string.IsNullOrEmpty(title)) { Console.WriteLine(title); }
@@ -30,45 +32,9 @@ namespace AirportTicketBookingSystem.Utilities
             return selection != null ? selection : "0";
         }
 
-        internal static void LaunchUserTypeSelection(string selection)
-        {
-            switch (selection)
-            {
-                // Manager User
-                case "1":
-                    string code = ManagerUtilities.ManagerUtilities.RequestManagerCode();
-                    bool validated = Manager.Validate(code);
-                    if (validated)
-                    {
-                        ManagerUtilities.ManagerUtilities.ShowAndLaunchManagerOptionsMenu();
-                    }
-                    Console.WriteLine();
-                    Console.Write("Press Enter to continue");
-                    Console.ReadLine();
-                    break;
 
-                // Passenger User
-                case "2":
-                    PassengerUtilities.PassengerUtilities.ShowAndLaunchManagePassengerMenu();
-                    Console.WriteLine();
-                    Console.Write("Press Enter to continue");
-                   Console.ReadLine();
-                    break;
 
-                //Exit Application
-                case "0":
-                    ExitApplication();
-                    Console.WriteLine();
-                    Console.Write("Press Enter to exit");
-                    Console.ReadLine();
-                    break;
-                default:
-                    Console.WriteLine("Yoy have not selected a valid option, please try again: ");
-                    break;
-            }
-        }
-
-        public static List<string> UserTypeOptions()
+        public List<string> UserTypeOptions()
         {
             List<string> menu = new List<string>();
             menu.Add("I'm a Manager");
@@ -78,7 +44,7 @@ namespace AirportTicketBookingSystem.Utilities
         }
 
 
-        public static void ExitApplication()
+        public void ExitApplication()
         {
             Console.WriteLine("****************************");
             Console.WriteLine("*  Thank you for you time  *");
@@ -86,7 +52,7 @@ namespace AirportTicketBookingSystem.Utilities
         }
 
 
-        public static void ShowListOfStrings(List<string> strings)
+        public void ShowListOfStrings(List<string> strings)
         {
             if (strings.Count > 0)
             {

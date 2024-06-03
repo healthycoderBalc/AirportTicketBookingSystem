@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using AirportTicketBookingSystem.Users;
 
 namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 {
-    public static class FilterByPassengerUtilities
+    public class FilterByPassengerUtilities
     {
-        public static int GetPassengerSelected()
+        private readonly IPassengerRepository _passengerRepository;
+
+        public FilterByPassengerUtilities(IPassengerRepository passengerRepository)
+        {
+            _passengerRepository = passengerRepository;
+        }
+
+        public int GetPassengerSelected()
         {
             Console.WriteLine();
-            PassengerRepository.PrintAllRegisteredPassengers();
+            _passengerRepository.PrintAllRegisteredPassengers();
             bool validPassengerId = false;
             int numericalPassengerId;
             do

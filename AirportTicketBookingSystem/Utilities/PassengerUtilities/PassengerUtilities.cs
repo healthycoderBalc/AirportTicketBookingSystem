@@ -5,11 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 
 namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
-    public static class PassengerUtilities
+    public class PassengerUtilities :IPassengerUtilities
     {
+        private readonly SearchFlightUtilities _searchFlightUtilities;
+        private readonly ManageBookingsUtilities _manageBookingsUtilities;
+        private readonly BookFlightUtilities _bookFlightUtilities;
+        private readonly IFlightsInventory _flightsInventory;
+        private readonly IPassengerRepository _passengerRepository;
+        private readonly IUtilities _utilities;
+
+
+        public PassengerUtilities(SearchFlightUtilities searchFlightUtilities, ManageBookingsUtilities manageBookingsUtilities, BookFlightUtilities bookFlightUtilities, IFlightsInventory flightsInventory, IPassengerRepository passengerRepository, IUtilities utilities)
+        {
+            _searchFlightUtilities = searchFlightUtilities;
+            _manageBookingsUtilities = manageBookingsUtilities;
+            _bookFlightUtilities = bookFlightUtilities;
+            _flightsInventory = flightsInventory;
+            _passengerRepository = passengerRepository;
+            _utilities = utilities;
+        }
+
+
+
         // ******************************************
         // Manage Passenger Flights
         // ******************************************
@@ -23,13 +45,13 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return menu;
         }
 
-        private static void LaunchManagePassengerSelection(string selection)
+        private void LaunchManagePassengerSelection(string selection)
         {
             switch (selection)
             {
                 // Book a flight
                 case "1":
-                    SearchFlightUtilities.ShowAndLaunchSearchFlightsMenu();
+                    _searchFlightUtilities.ShowAndLaunchSearchFlightsMenu();
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -56,14 +78,14 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             }
         }
 
-        public static void ShowAndLaunchManagePassengerMenu()
+        public void ShowAndLaunchManagePassengerMenu()
         {
             List<string> menu = ManagePassengerOptions();
 
             string managePassenger;
             do
             {
-                managePassenger = Utilities.ShowMenu(menu);
+                managePassenger = _utilities.ShowMenu(menu);
                 LaunchManagePassengerSelection(managePassenger);
             } while (managePassenger != "0");
         }
@@ -83,15 +105,15 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return menu;
         }
 
-        private static void LaunchManageBookingsSelection(string selection, Passenger passenger)
+        private void LaunchManageBookingsSelection(string selection, Passenger passenger)
         {
             switch (selection)
             {
                 // Cancel Booking
                 case "1":
-                    ManageBookingsUtilities.ViewMyBookings(passenger);
+                    _manageBookingsUtilities.ViewMyBookings(passenger);
                     string selectedBooking = SelectBookingFromOptions();
-                    ManageBookingsUtilities.CancelBooking(selectedBooking, passenger);
+                    _manageBookingsUtilities.CancelBooking(selectedBooking, passenger);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -99,9 +121,9 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 
                 // Modify Booking
                 case "2":
-                    ManageBookingsUtilities.ViewMyBookings(passenger);
+                    _manageBookingsUtilities.ViewMyBookings(passenger);
                     string selectedBookingToModify = SelectBookingFromOptions();
-                    BookFlightUtilities.MakeCompleteBooking(FlightsInventory.Flights, passenger, true, selectedBookingToModify);
+                    _bookFlightUtilities.MakeCompleteBooking(_flightsInventory.Flights, passenger, true, selectedBookingToModify);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -109,7 +131,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 
                 // View my Bookings
                 case "3":
-                    ManageBookingsUtilities.ViewMyBookings(passenger);
+                    _manageBookingsUtilities.ViewMyBookings(passenger);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -126,19 +148,19 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             }
         }
 
-        public static void ShowAndLaunchManageBookingsMenu()
+        public void ShowAndLaunchManageBookingsMenu()
         {
             List<string> menu = ManageBookingsOptions();
             List<string> passengerData = BookFlightUtilities.ValidateAccount("Login for Manage Bookings");
             Passenger? passenger = null;
 
-            passenger = PassengerRepository.ValidateAccount(passengerData[0], passengerData[1]);
+            passenger = _passengerRepository.ValidateAccount(passengerData[0], passengerData[1]);
             if (passenger != null)
             {
                 string manageBookings;
                 do
                 {
-                    manageBookings = Utilities.ShowMenu(menu, $"You are {passenger.Name}");
+                    manageBookings = _utilities.ShowMenu(menu, $"You are {passenger.Name}");
                     LaunchManageBookingsSelection(manageBookings, passenger);
                 } while (manageBookings != "0");
             }

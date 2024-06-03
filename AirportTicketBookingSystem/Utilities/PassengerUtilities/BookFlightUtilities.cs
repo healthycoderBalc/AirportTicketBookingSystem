@@ -1,5 +1,7 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using AirportTicketBookingSystem.Users;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,24 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
-    public static class BookFlightUtilities
+    public class BookFlightUtilities
     {
+        private readonly IPassengerRepository _passengerRepository;
+        private readonly IFlightsInventory _flightsInventory;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly ManageBookingsUtilities _manageBookingsUtilities;
+        private readonly IUtilities _utilities;
+
+
+        public BookFlightUtilities(IPassengerRepository passengerRepository, IFlightsInventory flightsInventory, IBookingRepository bookingRepository, ManageBookingsUtilities manageBookingsUtilities, IUtilities utilities)
+        {
+            _passengerRepository = passengerRepository; 
+            _flightsInventory = flightsInventory;
+            _bookingRepository = bookingRepository;
+            _manageBookingsUtilities = manageBookingsUtilities;
+            _utilities = utilities;
+        }
+
         // ******************************************
         // Account
         // ******************************************
@@ -20,7 +38,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return menu;
         }
 
-        private static void LaunchAccountSelection(string selection, List<Flight> flightsOption)
+        private void LaunchAccountSelection(string selection, List<Flight> flightsOption)
         {
             switch (selection)
             {
@@ -28,7 +46,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 case "1":
                     //create account
                     List<string> passengerData = CreateAccount("Creating Account");
-                    Passenger createdPassengerAccount = PassengerRepository.CreateAccount(passengerData[0], passengerData[1], passengerData[2]);
+                    Passenger createdPassengerAccount = _passengerRepository.CreateAccount(passengerData[0], passengerData[1], passengerData[2]);
 
                     MakeCompleteBooking(flightsOption, createdPassengerAccount, false);
 
@@ -40,7 +58,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 // Have Account
                 case "2":
                     List<string> passengerValidationData = ValidateAccount("Validating Account");
-                    Passenger? validatedPassengerAccount = PassengerRepository.ValidateAccount(passengerValidationData[0], passengerValidationData[1]);
+                    Passenger? validatedPassengerAccount = _passengerRepository.ValidateAccount(passengerValidationData[0], passengerValidationData[1]);
                     if (validatedPassengerAccount != null)
                     {
                         Console.WriteLine("Passenger validated: " + validatedPassengerAccount);
@@ -74,7 +92,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             }
         }
 
-        public static void ShowAndLaunchAccountMenu(List<Flight> flightsOption)
+        public void ShowAndLaunchAccountMenu(List<Flight> flightsOption)
         {
             List<string> menu = PassengerAccountOptions();
             string title = "Please select an option to continue booking a flight";
@@ -82,7 +100,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             do
             {
                 Console.WriteLine();
-                accountOption = Utilities.ShowMenu(menu, title);
+                accountOption = _utilities.ShowMenu(menu, title);
                 LaunchAccountSelection(accountOption, flightsOption);
             } while (accountOption != "0");
         }
@@ -173,7 +191,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
         // Booking
         // ******************************************
 
-        private static Flight SelectingFlightToBook(List<Flight> flightsOption)
+        private Flight SelectingFlightToBook(List<Flight> flightsOption)
         {
             Console.WriteLine();
             FlightsInventory.ShowFlights(flightsOption);
@@ -188,7 +206,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                     validFlightNumber = int.TryParse(flightNumber, out int numericalFlightNumber);
                     if (validFlightNumber)
                     {
-                        flight = FlightsInventory.GetFlightById(numericalFlightNumber);
+                        flight = _flightsInventory.GetFlightById(numericalFlightNumber);
                         if (flight != null)
                         {
                             Console.WriteLine();
@@ -207,13 +225,13 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return flight;
         }
 
-        private static FlightAvailability SelectingFlightAvailabilityToBook(Flight flight, Passenger passenger, bool modifyBooking, string? bookingNumberToModify = null)
+        private FlightAvailability SelectingFlightAvailabilityToBook(Flight flight, Passenger passenger, bool modifyBooking, string? bookingNumberToModify = null)
         {
             Console.WriteLine();
             FlightAvailability? flightAvailability = null;
             do
             {
-                string classSelected = Utilities.ShowMenu(SearchFlightUtilities.MenuOfFlightClasses(), "Now write the number of the Flight Class you want to book");
+                string classSelected = _utilities.ShowMenu(SearchFlightUtilities.MenuOfFlightClasses(), "Now write the number of the Flight Class you want to book");
                 if (classSelected != null)
                 {
                     bool validClassNumber = int.TryParse(classSelected, out int numericalClassNumber);
@@ -225,11 +243,11 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                             // make the booking
                             if (modifyBooking && bookingNumberToModify != null)
                             {
-                                ManageBookingsUtilities.ModifyBooking(bookingNumberToModify, passenger, flight, flightAvailability);
+                                _manageBookingsUtilities.ModifyBooking(bookingNumberToModify, passenger, flight, flightAvailability);
                             }
                             else
                             {
-                                PassengerRepository.CreateBooking(flight, passenger, flightAvailability);
+                                _bookingRepository.CreateBooking(flight, passenger, flightAvailability);
 
                             }
                         }
@@ -244,7 +262,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return flightAvailability;
         }
 
-        public static void MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount, bool modifyBooking, string? bookingNumberToModify = null)
+        public void MakeCompleteBooking(List<Flight> flightsOption, Passenger createdPassengerAccount, bool modifyBooking, string? bookingNumberToModify = null)
         {
             // select the flight
             Flight selectedFlight = SelectingFlightToBook(flightsOption);
@@ -257,7 +275,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             Console.WriteLine("******************************************************");
 
             Console.WriteLine(selectedFlight);
-            Booking lastBooking = BookingRepository.Bookings.Last(b => b.Passenger.Id.Equals(createdPassengerAccount.Id)) as Booking;
+            Booking lastBooking = _bookingRepository.Bookings.Last(b => b.Passenger.Id.Equals(createdPassengerAccount.Id)) as Booking;
             Console.WriteLine(lastBooking);
         }
     }

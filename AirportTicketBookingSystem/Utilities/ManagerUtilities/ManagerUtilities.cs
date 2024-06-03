@@ -1,6 +1,8 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using AirportTicketBookingSystem.Utilities.LoadingUtilities;
 using AirportTicketBookingSystem.Utilities.PassengerUtilities;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,27 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 {
-    public static class ManagerUtilities
+    public class ManagerUtilities : IManagerUtilities
     {
-        public static string RequestManagerCode()
+        private readonly FilterBookingsUtilities _filterBookingsUtilities;
+        private readonly IFlightsInventory _flightsInventory;
+        private readonly IPassengerRepository _passengerRepository;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly StorageFlightsUtilities _storageFlightsUtilities;
+        private readonly IUtilities _utilities;
+
+
+        public ManagerUtilities(FilterBookingsUtilities filterBookingUtilities, IFlightsInventory flightsInventory, IPassengerRepository passengerRepository, IBookingRepository bookingRepository, StorageFlightsUtilities storageFlightsUtilities, IUtilities utilities)
+        {
+            _filterBookingsUtilities = filterBookingUtilities;
+            _flightsInventory = flightsInventory;
+            _passengerRepository = passengerRepository;
+            _bookingRepository = bookingRepository;
+            _storageFlightsUtilities = storageFlightsUtilities;
+            _utilities = utilities;
+        }
+
+        public string RequestManagerCode()
         {
             string? code;
             do
@@ -26,7 +46,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
         // ******************************************
         // Manager Options
         // ******************************************
-        private static List<string> ManagerOptions()
+        private List<string> ManagerOptions()
         {
             List<string> menu = new List<string>();
             menu.Add("Filter Bookings");
@@ -38,14 +58,13 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
             return menu;
         }
 
-        private static void LaunchManagerSelection(string selection)
+        private void LaunchManagerSelection(string selection)
         {
-            StorageFlightsUtilities storageFlightsUtilities = new StorageFlightsUtilities();
             switch (selection)
             {
                 // Filter Bookings
                 case "1":
-                    FilterBookingsUtilities.ShowAndLaunchFilterBookingsMenu();
+                    _filterBookingsUtilities.ShowAndLaunchFilterBookingsMenu();
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -53,10 +72,9 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // Upload flights from file
                 case "2":
-                    
-                    List<Flight> flightsLoaded = storageFlightsUtilities.LoadFlightsFromFile();
-                    FlightsInventory.Flights = flightsLoaded;
-                    Console.WriteLine($"{FlightsInventory.Flights.Count} flights were loaded!");
+                    List<Flight> flightsLoaded = _storageFlightsUtilities.LoadFlightsFromFile();
+                    _flightsInventory.Flights.AddRange(flightsLoaded);
+                    Console.WriteLine($"{_flightsInventory.Flights.Count} flights were loaded!");
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -64,7 +82,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // See al flights
                 case "3":
-                    FlightsInventory.ShowFlights(FlightsInventory.Flights);
+                    FlightsInventory.ShowFlights(_flightsInventory.Flights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -73,7 +91,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // Show Flight Validation Details
                 case "4":
-                    storageFlightsUtilities.FetchAnnotations2();
+                    _storageFlightsUtilities.FetchAnnotations2();
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -81,8 +99,8 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                     // save all data to files
                 case "5":
-                    Users.PassengerRepository.SaveAllPassengers();
-                    BookingRepository.SaveAllBookings();
+                    _passengerRepository.SaveAllPassengers();
+                    _bookingRepository.SaveAllBookings();
                     break;
 
                 //Going back
@@ -98,7 +116,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
         }
 
-        public static void ShowAndLaunchManagerOptionsMenu()
+        public void ShowAndLaunchManagerOptionsMenu()
         {
             List<string> menu = ManagerOptions();
             string title = "Manager Functionality";
@@ -106,7 +124,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
             do
             {
                 Console.WriteLine();
-                selectedOption = Utilities.ShowMenu(menu, title);
+                selectedOption = _utilities.ShowMenu(menu, title);
 
                 LaunchManagerSelection(selectedOption);
             } while (selectedOption != "0");

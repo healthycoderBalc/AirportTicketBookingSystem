@@ -7,14 +7,15 @@ using AirportTicketBookingSystem.FlightManagement;
 using System.Linq;
 using System.Reflection;
 using System.Diagnostics.Metrics;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 
 namespace AirportTicketBookingSystem
 {
-    public static class FlightsInventory
+    public class FlightsInventory : IFlightsInventory
     {
-        public static List<Flight> Flights = new List<Flight>();
-        public static List<Country> Countries = new List<Country>();
-        public static List<Airport> Airports = new List<Airport>();
+        public List<Flight> Flights { get;  } = new List<Flight>();
+        public List<Country> Countries { get; } = new List<Country>();
+        public List<Airport> Airports { get; } = new List<Airport>();
 
 
 
@@ -22,7 +23,7 @@ namespace AirportTicketBookingSystem
         // Load Data
         // ******************************************
 
-        public static void LoadFlightsData()
+        public void LoadFlightsData()
         {
             //Flights.Clear();
             LoadCountries();
@@ -31,7 +32,7 @@ namespace AirportTicketBookingSystem
             LoadFlightAvailability();
         }
 
-        public static void LoadCountries()
+        public void LoadCountries()
         {
             List<string> countryNames = ["Argentina", "Colombia", "Chile"];
 
@@ -41,7 +42,7 @@ namespace AirportTicketBookingSystem
             }
         }
 
-        public static void LoadAirports()
+        public void LoadAirports()
         {
             List<string> ArgentinaAirportNames = ["Aeroparque", "Ezeiza", "Ing. Ambrosio"];
             List<string> ColombiaAirportNames = ["El Dorado", "Puente Aereo", "Olaya Herrera"];
@@ -74,7 +75,7 @@ namespace AirportTicketBookingSystem
             }
         }
 
-        public static void LoadFlights()
+        public void LoadFlights()
         {
             List<FlightAvailability> flightAvailabilities = LoadFlightAvailability();
             Flight f1 = new(1, new DateTime(2024, 5, 6, 10, 30, 0), Airports[0], Airports[2], flightAvailabilities);
@@ -95,7 +96,7 @@ namespace AirportTicketBookingSystem
 
         }
 
-        public static List<FlightAvailability> LoadFlightAvailability()
+        public List<FlightAvailability> LoadFlightAvailability()
         {
             List<int> placesByClass = [20, 10, 5];
             List<double> pricesByClass = [1000, 1500, 2000];
@@ -109,7 +110,7 @@ namespace AirportTicketBookingSystem
             return flightsByClass;
         }
 
-        public static List<FlightAvailability> LoadExtraFlightAvailability()
+        public List<FlightAvailability> LoadExtraFlightAvailability()
         {
             List<int> placesByClass = [30, 15, 5];
             List<double> pricesByClass = [3000, 3500, 4000];
@@ -128,7 +129,7 @@ namespace AirportTicketBookingSystem
         // Searches
         // ******************************************
 
-        public static List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
+        public List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
         {
             // getting type of flight and property by its name
             Type flightType = typeof(Flight);
@@ -242,7 +243,7 @@ namespace AirportTicketBookingSystem
             else { Console.WriteLine("\nNo flights to show"); }
         }
 
-        public static Flight? GetFlightById(int id)
+        public Flight? GetFlightById(int id)
         {
             try
             {

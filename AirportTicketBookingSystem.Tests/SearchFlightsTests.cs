@@ -5,6 +5,7 @@ using AutoFixture.Xunit2;
 using System.Linq;
 using Xunit;
 using System;
+using AirportTicketBookingSystem.Users;
 
 namespace AirportTicketBookingSystem.Tests
 {
@@ -16,6 +17,7 @@ namespace AirportTicketBookingSystem.Tests
         {
             _fixture = new Fixture();
         }
+
 
         [Theory]
         [InlineAutoData(100, 200)]

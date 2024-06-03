@@ -1,4 +1,6 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,19 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
-    public static class SearchFlightUtilities
+    public class SearchFlightUtilities
     {
+        private readonly IFlightsInventory _flightsInventory;
+        private readonly IUtilities _utilities;
+        private readonly BookFlightUtilities _bookFlightUtilities;
+
+        public SearchFlightUtilities(IFlightsInventory flightsInventory, IUtilities utilities, BookFlightUtilities bookFlightUtilities)
+        {
+            _flightsInventory = flightsInventory;
+            _utilities = utilities;
+            _bookFlightUtilities = bookFlightUtilities;
+        }
+
         // ******************************************
         // Search Flights
         // ******************************************
@@ -29,7 +42,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             return menu;
         }
 
-        private static object[] LaunchSearchFlightsSelection(string selection, List<string> filters, List<Flight> searchedListOfFlights)
+        private object[] LaunchSearchFlightsSelection(string selection, List<string> filters, List<Flight> searchedListOfFlights)
         {
             object[] result = [filters, searchedListOfFlights];
             switch (selection)
@@ -137,7 +150,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 
                 // clear search
                 case "8":
-                    searchedListOfFlights = FlightsInventory.Flights;
+                    searchedListOfFlights = _flightsInventory.Flights;
                     result[1] = searchedListOfFlights;
                     result[0] = new List<string>();
                     Console.WriteLine();
@@ -147,7 +160,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 
                 // Search ready - Select a Flight
                 case "9":
-                    BookFlightUtilities.ShowAndLaunchAccountMenu(searchedListOfFlights);
+                    _bookFlightUtilities.ShowAndLaunchAccountMenu(searchedListOfFlights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();
@@ -167,14 +180,14 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             }
         }
 
-        public static void ShowAndLaunchSearchFlightsMenu()
+        public void ShowAndLaunchSearchFlightsMenu()
         {
             List<string> menu = SearchFlightsOptions();
             string title = "Please select a parameter to search flights";
             string searchFlight;
             object[] resultSearch = new object[2];
             List<string> filters = new List<string>();
-            List<Flight> searchedListOfFlights = FlightsInventory.Flights;
+            List<Flight> searchedListOfFlights = _flightsInventory.Flights;
             resultSearch[0] = filters;
             resultSearch[1] = searchedListOfFlights;
             do
@@ -184,11 +197,11 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 Console.WriteLine($"******** Current Filters ********");
                 Console.WriteLine($"*********************************");
 
-                Utilities.ShowListOfStrings((List<string>)resultSearch[0]);
+                _utilities.ShowListOfStrings((List<string>)resultSearch[0]);
 
 
                 Console.WriteLine();
-                searchFlight = Utilities.ShowMenu(menu, title);
+                searchFlight = _utilities.ShowMenu(menu, title);
 
                 resultSearch = LaunchSearchFlightsSelection(searchFlight, (List<string>)resultSearch[0], (List<Flight>)resultSearch[1]);
             } while (searchFlight != "0");
@@ -199,7 +212,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
         // Search By
         // ******************************************
 
-        private static string SearchBy(string by, List<string>? internalMenu = null)
+        private string SearchBy(string by, List<string>? internalMenu = null)
         {
             string? searchTerm;
             do
@@ -214,7 +227,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
                 }
                 else
                 {
-                    searchTerm = Utilities.ShowMenu(internalMenu);
+                    searchTerm = _utilities.ShowMenu(internalMenu);
                 }
                 Console.WriteLine();
             } while (string.IsNullOrEmpty(searchTerm));

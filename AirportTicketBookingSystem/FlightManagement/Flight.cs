@@ -29,7 +29,6 @@ namespace AirportTicketBookingSystem.FlightManagement
 
         [AtLeastOneElementInList(ErrorMessage = "At least a person is required")]
         public List<FlightAvailability> FlightAvailabilities { get; set; }
-        public Flight() { }
 
         public Flight(int id, DateTime departureDate, Airport departureAirport, Airport arrivalAirport, List<FlightAvailability> flightAvailabilities)
         {

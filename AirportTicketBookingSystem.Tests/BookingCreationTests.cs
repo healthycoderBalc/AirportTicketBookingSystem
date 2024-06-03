@@ -6,28 +6,27 @@ using System.Linq;
 using Xunit;
 using System;
 using AirportTicketBookingSystem.Users;
+using AirportTicketBookingSystem.RepositoryInterfaces;
+using AirportTicketBookingSystem.Utilities.PassengerUtilities;
 
 namespace AirportTicketBookingSystem.Tests
 {
     public class BookingCreationTests
     {
         private readonly Fixture _fixture;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IPassengerRepository _passengerRepository;
+        private readonly IFlightsInventory _flightsInventory;
+        private readonly ManageBookingsUtilities _manageBookingsUtilities;
 
         public BookingCreationTests()
         {
             _fixture = new Fixture();
+            _passengerRepository = new PassengerRepository();
+            _flightsInventory = new FlightsInventory();
+            _bookingRepository = new BookingRepository(_passengerRepository, _flightsInventory);
+            _manageBookingsUtilities = new ManageBookingsUtilities(_bookingRepository, _passengerRepository);
 
-            _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
-              .ForEach(b => _fixture.Behaviors.Remove(b));
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-
-            _fixture.Customize<Passenger>(composer => composer.FromFactory(() =>
-                new Passenger(
-                    id: _fixture.Create<int>(),
-                    name: _fixture.Create<string>(),
-                    email: _fixture.Create<string>(),
-                    password: _fixture.Create<string>()
-                )));
         }
 
         [Fact]
@@ -42,22 +41,19 @@ namespace AirportTicketBookingSystem.Tests
             var flight = _fixture.Build<Flight>()
                 .With(f => f.FlightAvailabilities, flightAvailabilities)
                 .Create();
+            _flightsInventory.Flights.Add(flight);
 
-            FlightsInventory.Flights.Add(flight);
-
-            PassengerRepository.RegisteredPassengers.Clear();
             var passenger = _fixture.Create<Passenger>();
-            PassengerRepository.RegisteredPassengers.Add(passenger);
-
-            BookingRepository.Bookings.Clear();
+            _passengerRepository.RegisteredPassengers.Add(passenger);
 
             //Act
-            var bookingCreated = PassengerRepository.CreateBooking(flight, passenger, flightAvailability);
+            var bookingCreated = _bookingRepository.CreateBooking(flight, passenger, flightAvailability);
 
             //Assert
-            Assert.Single(BookingRepository.Bookings);
-            Assert.Single(PassengerRepository.RegisteredPassengers);
-            Assert.Equal(passenger, BookingRepository.Bookings[0].Passenger);
+            Assert.Single(_bookingRepository.Bookings);
+            Assert.Single(_passengerRepository.RegisteredPassengers);
+            Assert.Equal(passenger, _bookingRepository.Bookings[0].Passenger);
+
         }
 
         [Fact]
@@ -73,17 +69,17 @@ namespace AirportTicketBookingSystem.Tests
                 .With(f => f.FlightAvailabilities, flightAvailabilities)
                 .Create();
 
-            FlightsInventory.Flights.Add(flight);
+            _flightsInventory.Flights.Add(flight);
 
-            PassengerRepository.RegisteredPassengers.Clear();
             var unregisteredPassenger = _fixture.Create<Passenger>();
 
             //Act
             //Assert
-            Assert.Empty(PassengerRepository.RegisteredPassengers);
+            Assert.Empty(_passengerRepository.RegisteredPassengers);
             var exception = Assert.Throws<InvalidOperationException>(
-                () => PassengerRepository.CreateBooking(flight, unregisteredPassenger, flightAvailability));
+                () => _bookingRepository.CreateBooking(flight, unregisteredPassenger, flightAvailability));
             Assert.Equal("Passenger is not registered.", exception.Message);
+
         }
 
 
@@ -100,20 +96,16 @@ namespace AirportTicketBookingSystem.Tests
                 .With(f => f.FlightAvailabilities, flightAvailabilities)
                 .Create();
 
-            FlightsInventory.Flights.Clear();
-
-            PassengerRepository.RegisteredPassengers.Clear();
             var passenger = _fixture.Create<Passenger>();
-            PassengerRepository.RegisteredPassengers.Add(passenger);
-
-            BookingRepository.Bookings.Clear();
+            _passengerRepository.RegisteredPassengers.Add(passenger);
 
             //Act
             //Assert
-            Assert.Empty(FlightsInventory.Flights);
+            Assert.Empty(_flightsInventory.Flights);
             var exception = Assert.Throws<InvalidOperationException>(
-                () => PassengerRepository.CreateBooking(invalidFlight, passenger, flightAvailability));
+                () => _bookingRepository.CreateBooking(invalidFlight, passenger, flightAvailability));
             Assert.Equal("Flight does not exist.", exception.Message);
+
         }
 
         [Theory]
@@ -139,20 +131,20 @@ namespace AirportTicketBookingSystem.Tests
                 .With(x => x.FlightAvailabilities, new List<FlightAvailability> { differentFlightAvailability })
                 .Create();
 
-            FlightsInventory.Flights.Add(flight);
+            _flightsInventory.Flights.Add(flight);
 
 
-            PassengerRepository.RegisteredPassengers.Clear();
-            var passenger = _fixture.Create<Passenger>();
-            PassengerRepository.RegisteredPassengers.Add(passenger);
+            var passenger = _fixture.Build<Passenger>()
+                .Create();
+            _passengerRepository.RegisteredPassengers.Add(passenger);
 
-            BookingRepository.Bookings.Clear();
 
             //Act
             //Assert
             var exception = Assert.Throws<InvalidOperationException>(
-                () => PassengerRepository.CreateBooking(flight, passenger, flightAvailability));
+                () => _bookingRepository.CreateBooking(flight, passenger, flightAvailability));
             Assert.Equal("That Flight Class does not exist in the selected flight.", exception.Message);
+
         }
 
     }

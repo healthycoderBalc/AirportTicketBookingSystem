@@ -16,7 +16,6 @@ namespace AirportTicketBookingSystem.Utilities.LoadingUtilities
     {
         private string directory = @"D:\Foothill\C#Course\Exercise\Storage\";
         private string flightsFileName = "flightData.csv";
-        private string bookingFileName = "bookingsSaved.csv";
 
         private void CheckForExistingFlightFile()
         {

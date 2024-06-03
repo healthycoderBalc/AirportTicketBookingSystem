@@ -12,7 +12,7 @@ namespace AirportTicketBookingSystem.FlightManagement
         public int Id { get; set; }
         public Flight Flight { get; set; }
         public FlightAvailability FlightAvailability { get; set; }
-        public Passenger Passenger { get; set; }
+        public IPassenger Passenger { get; set; }
         public Booking(int id, Flight flight,FlightAvailability flightAvailability, Passenger passenger)
         {
             Flight = flight;

@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 {
-    public static class FilterByFlightClassUtilities
+    public class FilterByFlightClassUtilities
     {
-        public static int GetFlightClassSelected()
+        private readonly IUtilities _utilities;
+
+        public FilterByFlightClassUtilities(IUtilities Utilities) {  _utilities = Utilities; }
+        public int GetFlightClassSelected()
         {
             Console.WriteLine();
             int numericalFlightClass;
@@ -17,7 +21,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
             do
             {
                 List<string> menu = MenuOfFlightClasses();
-                string flightClass = Utilities.ShowMenu(menu, "Now write the number (Id) of the Flight Class you want to filter by");
+                string flightClass = _utilities.ShowMenu(menu, "Now write the number (Id) of the Flight Class you want to filter by");
                 validFlightClass = int.TryParse(flightClass, out numericalFlightClass);
                 if (!validFlightClass)
                 {

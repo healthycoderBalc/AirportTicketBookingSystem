@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Users
 {
-    public class Passenger
+    public class Passenger : IPassenger
     {
         public int Id { get; set; }
         public string Name { get; set; }

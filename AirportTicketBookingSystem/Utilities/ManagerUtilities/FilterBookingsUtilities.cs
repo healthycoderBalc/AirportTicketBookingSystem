@@ -1,5 +1,7 @@
 ﻿using AirportTicketBookingSystem.FlightManagement;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 using AirportTicketBookingSystem.Utilities.PassengerUtilities;
+using AirportTicketBookingSystem.Utilities.UtilitiesInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,23 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 {
-    public static class FilterBookingsUtilities
+    public class FilterBookingsUtilities
     {
+        private readonly IBookingRepository _bookingRepository;
+        private readonly FilterByFlightUtilities _filterByFlightUtilities;
+        private readonly FilterByPassengerUtilities _filterByPassengerUtilities;
+        private readonly FilterByFlightClassUtilities _filterByFlightClassUtilities;
+        private readonly IUtilities _utilities;
+
+        public FilterBookingsUtilities(IBookingRepository bookingRepository, FilterByFlightUtilities filterByFlightUtilities, FilterByPassengerUtilities filterByPassengerUtilities, FilterByFlightClassUtilities filterByFlightClassUtilities , IUtilities utilities)
+        {
+            _bookingRepository = bookingRepository;
+            _filterByFlightUtilities = filterByFlightUtilities;
+            _filterByPassengerUtilities = filterByPassengerUtilities;
+            _filterByFlightClassUtilities = filterByFlightClassUtilities;
+            _utilities = utilities;
+        }
+
         private static List<string> FilterBookingsOptions()
         {
             List<string> menu = new List<string>();
@@ -26,14 +43,14 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
             return menu;
         }
 
-        private static void LaunchFilterBookingsSelection(string selection)
+        private void LaunchFilterBookingsSelection(string selection)
         {
             switch (selection)
             {
                 // Filter By Flight
                 case "1":
-                    int flightSelected = FilterByFlightUtilities.GetSelectedFlightId();
-                    List<Booking> bookingsByFlight = BookingRepository.GetBookingsByFlightId(flightSelected);
+                    int flightSelected = _filterByFlightUtilities.GetSelectedFlightId();
+                    List<Booking> bookingsByFlight = _bookingRepository.GetBookingsByFlightId(flightSelected);
                     BookingRepository.PrintBookings(bookingsByFlight);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -42,7 +59,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter by Price
                 case "2":
                     List<double> priceRange = FilterByPriceUtilities.GetSelectedPriceRange();
-                    List<Booking> bookingsByPrice = BookingRepository.GetBookingsByPrice(priceRange[0], priceRange[1]);
+                    List<Booking> bookingsByPrice = _bookingRepository.GetBookingsByPrice(priceRange[0], priceRange[1]);
                     BookingRepository.PrintBookings(bookingsByPrice);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -52,7 +69,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter By Departure Country
                 case "3":
                     string departureCountry = FilterByAirportAndCountryUtilities.GetGivenName(false);
-                    List<Booking> bookingsByDepartureCountry = BookingRepository.GetBookingsByDepartureCountry(departureCountry);
+                    List<Booking> bookingsByDepartureCountry = _bookingRepository.GetBookingsByDepartureCountry(departureCountry);
                     BookingRepository.PrintBookings(bookingsByDepartureCountry);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -62,7 +79,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter By Destination Country
                 case "4":
                     string destinationCountry = FilterByAirportAndCountryUtilities.GetGivenName(false);
-                    List<Booking> bookingsByDestinationCountry = BookingRepository.GetBookingsByDestinationCountry(destinationCountry);
+                    List<Booking> bookingsByDestinationCountry = _bookingRepository.GetBookingsByDestinationCountry(destinationCountry);
                     BookingRepository.PrintBookings(bookingsByDestinationCountry);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -71,7 +88,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter By Departure Date
                 case "5":
                     List<int> date = FilterByDateUtilities.GetDates();
-                    List<Booking> bookingsByDate = BookingRepository.GetBookingsByDepartureDate(date);
+                    List<Booking> bookingsByDate = _bookingRepository.GetBookingsByDepartureDate(date);
                     BookingRepository.PrintBookings(bookingsByDate);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -81,7 +98,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter By Departure Airport
                 case "6":
                     string departureAirport = FilterByAirportAndCountryUtilities.GetGivenName(true);
-                    List<Booking> bookingsByDepartureAirport = BookingRepository.GetBookingsByDepartureAirport(departureAirport);
+                    List<Booking> bookingsByDepartureAirport = _bookingRepository.GetBookingsByDepartureAirport(departureAirport);
                     BookingRepository.PrintBookings(bookingsByDepartureAirport);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -90,7 +107,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
                 // Filter By Arrival Airport
                 case "7":
                     string arrivalAirport = FilterByAirportAndCountryUtilities.GetGivenName(true);
-                    List<Booking> bookingsByArrivalAirport = BookingRepository.GetBookingsByArrivalAirport(arrivalAirport);
+                    List<Booking> bookingsByArrivalAirport = _bookingRepository.GetBookingsByArrivalAirport(arrivalAirport);
                     BookingRepository.PrintBookings(bookingsByArrivalAirport);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -98,8 +115,8 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // Filter By Passenger
                 case "8":
-                    int passengerId = FilterByPassengerUtilities.GetPassengerSelected();
-                    List<Booking> bookingsByPassenger = BookingRepository.GetBookingsByPassengerId(passengerId);
+                    int passengerId = _filterByPassengerUtilities.GetPassengerSelected();
+                    List<Booking> bookingsByPassenger = _bookingRepository.GetBookingsByPassengerId(passengerId);
                     BookingRepository.PrintBookings(bookingsByPassenger);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -107,8 +124,8 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // Filter By Flight Class
                 case "9":
-                    int selectedFlightClass = FilterByFlightClassUtilities.GetFlightClassSelected();
-                    List<Booking> bookingsByFlightClass = BookingRepository.GetBookingsByClass(selectedFlightClass);
+                    int selectedFlightClass = _filterByFlightClassUtilities.GetFlightClassSelected();
+                    List<Booking> bookingsByFlightClass = _bookingRepository.GetBookingsByClass(selectedFlightClass);
                     BookingRepository.PrintBookings(bookingsByFlightClass);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -125,16 +142,16 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
             }
         }
-        public static void ShowAndLaunchFilterBookingsMenu()
+        public void ShowAndLaunchFilterBookingsMenu()
         {
             List<string> menu = FilterBookingsOptions();
             string title = "Please select a parameter to filter bookings";
             string filterBookingOption;
-            List<Booking> searchedListOfFlights = BookingRepository.Bookings;
+            List<Booking> searchedListOfFlights = _bookingRepository.Bookings;
             do
             {
                 Console.WriteLine();
-                filterBookingOption = Utilities.ShowMenu(menu, title);
+                filterBookingOption = _utilities.ShowMenu(menu, title);
 
                 LaunchFilterBookingsSelection(filterBookingOption);
             } while (filterBookingOption != "0");
