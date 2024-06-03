@@ -1,5 +1,4 @@
 using AirportTicketBookingSystem.FlightManagement;
-using AirportTicketBookingSystem;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using System.Linq;
@@ -7,7 +6,7 @@ using Xunit;
 using System;
 using AirportTicketBookingSystem.Users;
 
-namespace AirportTicketBookingSystem.Tests
+namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
 {
     public class SearchFlightsTests
     {

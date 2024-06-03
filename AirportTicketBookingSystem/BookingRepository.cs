@@ -101,7 +101,8 @@ namespace AirportTicketBookingSystem
 
         public List<Booking> GetBookingsByClass(int flightClass)
         {
-            List<Booking> bookingsResult = Bookings.Where(b => b.FlightAvailability.FlightClass.Equals((FlightClass)flightClass - 1)).ToList();
+            List<Booking> bookingsResult = Bookings.Where(b => (int)b.FlightAvailability.FlightClass == flightClass).ToList();
+
             return bookingsResult;
         }
         public void SaveAllBookings()

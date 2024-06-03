@@ -1,6 +1,5 @@
 using AirportTicketBookingSystem.FlightManagement;
 using AirportTicketBookingSystem.Utilities.PassengerUtilities;
-using AirportTicketBookingSystem;
 using AutoFixture.Xunit2;
 using System.Linq;
 using AutoFixture;
@@ -10,7 +9,7 @@ using System;
 using AirportTicketBookingSystem.Users;
 using AirportTicketBookingSystem.RepositoryInterfaces;
 
-namespace AirportTicketBookingSystem.Tests
+namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
 {
     public class ManageBookingsTests
     {
@@ -23,22 +22,11 @@ namespace AirportTicketBookingSystem.Tests
         public ManageBookingsTests()
         {
             _fixture = new Fixture();
-            // _fixture.Customize<IPassenger>(composer => composer.FromFactory(() => _fixture.Create<Passenger>()));
-            // CleanupRepositories();
             _flightsInventory = new FlightsInventory();
             _passengerRepository = new PassengerRepository();
             _bookingRepository = new BookingRepository(_passengerRepository, _flightsInventory);
             _manageBookingsUtilities = new ManageBookingsUtilities(_bookingRepository, _passengerRepository);
         }
-
-        //private static void CleanupRepositories()
-        //{
-        //    PassengerRepository.RegisteredPassengers.Clear();
-        //    BookingRepository.Bookings.Clear();
-        //    FlightsInventory.Flights.Clear();
-        //}
-
-        //public void Dispose() { CleanupRepositories(); }
 
         [Fact]
         public void ShouldReturnCorrectBookingForPassenger()
