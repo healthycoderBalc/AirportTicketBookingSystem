@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AirportTicketBookingSystem.Users;
 using AirportTicketBookingSystem.FlightManagement;
 using AirportTicketBookingSystem.RepositoryInterfaces;
+using AirportTicketBookingSystem.Utilities.BookingUtilities;
 
 namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
 {
@@ -90,7 +91,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
             Console.WriteLine("**************************************");
             Console.WriteLine();
 
-            BookingRepository.PrintBookings(bookings);
+            BookingPresentationUtilities.PrintBookings(bookings);
         }
 
         public Booking? SelectBooking(string bookingNumber, Passenger passenger)

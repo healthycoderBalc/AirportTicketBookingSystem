@@ -22,7 +22,7 @@ namespace AirportTicketBookingSystem.Utilities.StorageUtilities
             sb.AppendLine();
             foreach (Booking booking in bookings)
             {
-                sb.Append(Booking.SaveToFile(booking));
+                sb.Append(BookingRepository.SaveToFile(booking));
             }
 
             File.WriteAllText(path, sb.ToString());

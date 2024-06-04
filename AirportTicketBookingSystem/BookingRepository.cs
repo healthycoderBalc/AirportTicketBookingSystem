@@ -24,26 +24,7 @@ namespace AirportTicketBookingSystem
             _flightsInventory = flightInventory;
         }
 
-        public static void PrintBookings(List<Booking>? bookings)
-        {
-            Console.Clear();
-            Console.WriteLine("******************************");
-            Console.WriteLine("*******   Bookings   *********");
-            Console.WriteLine("******************************");
 
-            if (bookings == null)
-            {
-                Console.WriteLine("No bookings to show");
-            }
-            else
-            {
-                foreach (Booking booking in bookings)
-                {
-                    Console.WriteLine(booking);
-                    Console.WriteLine();
-                }
-            }
-        }
 
         public List<Booking> GetBookingsByFlightId(int flightId)
         {
@@ -112,13 +93,8 @@ namespace AirportTicketBookingSystem
 
             if (Bookings != null)
             {
-                foreach (var b in Bookings)
-                {
-                    if (b != null)
-                    {
-                        bookings.Add(b);
-                    }
-                }
+                bookings.AddRange(Bookings);
+
                 if (bookings.Count > 0)
                 {
                     storageBookingUtilities.SaveBookingsToFile(bookings);
@@ -152,6 +128,14 @@ namespace AirportTicketBookingSystem
             UsedIds.Add(booking.Id);
 
             return booking;
+        }
+
+        public static string SaveToFile(Booking b)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"{b.Id};{b.Flight.Id};{(int)b.FlightAvailability.FlightClass};{b.Passenger.Id}");
+
+            return stringBuilder.ToString();
         }
     }
 }
