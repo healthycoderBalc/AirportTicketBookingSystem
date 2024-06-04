@@ -194,7 +194,7 @@ namespace AirportTicketBookingSystem.Utilities.PassengerUtilities
         private Flight SelectingFlightToBook(List<Flight> flightsOption)
         {
             Console.WriteLine();
-            FlightsInventory.ShowFlights(flightsOption);
+            _flightsInventory.ShowFlights(flightsOption);
             bool validFlightNumber = false;
             Flight? flight = null;
             do

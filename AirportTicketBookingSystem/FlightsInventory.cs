@@ -13,7 +13,7 @@ namespace AirportTicketBookingSystem
 {
     public class FlightsInventory : IFlightsInventory
     {
-        public List<Flight> Flights { get;  } = new List<Flight>();
+        public List<Flight> Flights { get; } = new List<Flight>();
         public List<Country> Countries { get; } = new List<Country>();
         public List<Airport> Airports { get; } = new List<Airport>();
 
@@ -21,40 +21,7 @@ namespace AirportTicketBookingSystem
         // Searches
         // ******************************************
 
-        public List<Flight> SearchFlightsByAirportOrCountryName(List<Flight> flightsToSearch, string fieldName, string fieldValue, bool country)
-        {
-            // getting type of flight and property by its name
-            Type flightType = typeof(Flight);
-            PropertyInfo? property = flightType.GetProperty(fieldName);
-
-            if (property != null)
-            {
-                IEnumerable<Flight> resultSearch =
-                   flightsToSearch.Where(flight =>
-                   { // using property to check search
-                       var propertyValue = property.GetValue(flight);
-                       if (propertyValue != null && propertyValue.GetType() == typeof(Airport))
-                       {
-                           if (country)
-                           {
-                               return ((Airport)propertyValue).Country.Name == fieldValue;
-                           }
-                           else
-                           {
-                               return ((Airport)propertyValue).Name == fieldValue;
-                           }
-                       }
-                       return false;
-                   });
-                return resultSearch.ToList();
-            }
-            else
-            {
-                return [];
-            }
-        }
-
-        public static List<Flight> SearchFlightsByAirportName(List<Flight> flightsToSearch, string airportName, bool departure)
+        public List<Flight> SearchFlightsByAirportName(List<Flight> flightsToSearch, string airportName, bool departure)
         {
             if (flightsToSearch == null || string.IsNullOrWhiteSpace(airportName))
             {
@@ -62,7 +29,8 @@ namespace AirportTicketBookingSystem
             }
 
             IEnumerable<Flight> resultSearch =
-             flightsToSearch.Where(flight => {
+             flightsToSearch.Where(flight =>
+             {
                  return departure
                      ? flight.DepartureAirport.Name.Contains(airportName)
                      : flight.ArrivalAirport.Name.Contains(airportName);
@@ -71,7 +39,7 @@ namespace AirportTicketBookingSystem
             return resultSearch.ToList();
         }
 
-        public static List<Flight> SearchFlightsByCountryName(List<Flight> flightsToSearch, string countryName, bool departure)
+        public List<Flight> SearchFlightsByCountryName(List<Flight> flightsToSearch, string countryName, bool departure)
         {
             if (flightsToSearch == null || string.IsNullOrWhiteSpace(countryName))
             {
@@ -79,7 +47,8 @@ namespace AirportTicketBookingSystem
             }
 
             IEnumerable<Flight> resultSearch =
-             flightsToSearch.Where(flight => {
+             flightsToSearch.Where(flight =>
+             {
                  return departure
                      ? flight.DepartureAirport.Country.Name.Contains(countryName)
                      : flight.ArrivalAirport.Country.Name.Contains(countryName);
@@ -90,7 +59,7 @@ namespace AirportTicketBookingSystem
 
 
 
-        public static List<Flight> SearchFlightsByClass(List<Flight> flightsToSearch, int fcNumber)
+        public List<Flight> SearchFlightsByClass(List<Flight> flightsToSearch, int fcNumber)
         {
 
             IEnumerable<Flight> resultSearch =
@@ -99,7 +68,7 @@ namespace AirportTicketBookingSystem
             return resultSearch.ToList();
         }
 
-        public static List<Flight> SearchFlightsByPrice(List<Flight> flightsToSearch, List<double> priceRange)
+        public List<Flight> SearchFlightsByPrice(List<Flight> flightsToSearch, List<double> priceRange)
         {
             IEnumerable<Flight> resultSearch =
               flightsToSearch.Where(flight => flight.FlightAvailabilities.Any(availability => (availability.Price >= priceRange[0] && availability.Price <= priceRange[1])));
@@ -107,7 +76,7 @@ namespace AirportTicketBookingSystem
             return resultSearch.ToList();
         }
 
-        public static List<Flight> SearchFlightsByDate(List<Flight> flightsToSearch, List<int> date)
+        public List<Flight> SearchFlightsByDate(List<Flight> flightsToSearch, List<int> date)
         {
             IEnumerable<Flight> resultSearch =
               flightsToSearch.Where(flight => flight.DepartureDate.Year.Equals(date[0]) && flight.DepartureDate.Month.Equals(date[1]) && flight.DepartureDate.Day.Equals(date[2]));
@@ -116,7 +85,7 @@ namespace AirportTicketBookingSystem
         }
 
 
-        public static void ShowFlights(List<Flight> flights, int? selectedClass = null)
+        public void ShowFlights(List<Flight> flights, int? selectedClass = null)
         {
             if (flights.Count > 0)
             {

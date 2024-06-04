@@ -82,7 +82,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
 
                 // See al flights
                 case "3":
-                    FlightsInventory.ShowFlights(_flightsInventory.Flights);
+                    _flightsInventory.ShowFlights(_flightsInventory.Flights);
                     Console.WriteLine();
                     Console.Write("Press Enter to continue");
                     Console.ReadLine();

@@ -86,22 +86,6 @@ namespace AirportTicketBookingSystem
 
             return bookingsResult;
         }
-        public void SaveAllBookings()
-        {
-            StorageBookingUtilities storageBookingUtilities = new StorageBookingUtilities();
-            List<Booking> bookings = new List<Booking>();
-
-            if (Bookings != null)
-            {
-                bookings.AddRange(Bookings);
-
-                if (bookings.Count > 0)
-                {
-                    storageBookingUtilities.SaveBookingsToFile(bookings);
-                }
-            }
-
-        }
 
         public Booking CreateBooking(Flight flight, Passenger passenger, FlightAvailability flightAvailability)
         {
@@ -128,6 +112,21 @@ namespace AirportTicketBookingSystem
             UsedIds.Add(booking.Id);
 
             return booking;
+        }
+        public void SaveAllBookings()
+        {
+            StorageBookingUtilities storageBookingUtilities = new StorageBookingUtilities();
+            List<Booking> bookings = new List<Booking>();
+
+            if (Bookings != null)
+            {
+                bookings.AddRange(Bookings);
+
+                if (bookings.Count > 0)
+                {
+                    storageBookingUtilities.SaveBookingsToFile(bookings);
+                }
+            }
         }
 
         public static string SaveToFile(Booking b)

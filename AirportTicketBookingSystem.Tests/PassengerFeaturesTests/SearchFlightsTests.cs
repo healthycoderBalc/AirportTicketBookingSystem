@@ -5,16 +5,20 @@ using System.Linq;
 using Xunit;
 using System;
 using AirportTicketBookingSystem.Users;
+using AirportTicketBookingSystem.RepositoryInterfaces;
 
 namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
 {
     public class SearchFlightsTests
     {
         private readonly Fixture _fixture;
+        private readonly IFlightsInventory _flightsInventory;
+
 
         public SearchFlightsTests()
         {
             _fixture = new Fixture();
+            _flightsInventory = new FlightsInventory();
         }
 
 
@@ -39,7 +43,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByPrice(flights, new List<double> { lowerSearchLimit, upperSearchLimit });
+            var filteredFlights = _flightsInventory.SearchFlightsByPrice(flights, new List<double> { lowerSearchLimit, upperSearchLimit });
 
             //Assert
             Assert.Single(filteredFlights);
@@ -69,7 +73,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByCountryName(flights, departureCountry, true);
+            var filteredFlights = _flightsInventory.SearchFlightsByCountryName(flights, departureCountry, true);
 
             //Assert
             Assert.Single(filteredFlights);
@@ -99,7 +103,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByCountryName(flights, arrivalCountry, false);
+            var filteredFlights = _flightsInventory.SearchFlightsByCountryName(flights, arrivalCountry, false);
 
             //Assert
             Assert.Single(filteredFlights);
@@ -125,7 +129,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByAirportName(flights, departureAirportName, true);
+            var filteredFlights = _flightsInventory.SearchFlightsByAirportName(flights, departureAirportName, true);
 
             //Assert
             Assert.Single(filteredFlights);
@@ -151,7 +155,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByAirportName(flights, arrivalAirportName, false);
+            var filteredFlights = _flightsInventory.SearchFlightsByAirportName(flights, arrivalAirportName, false);
 
             //Assert
             Assert.Single(filteredFlights);
@@ -174,7 +178,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByDate(flights, [year, month, day]);
+            var filteredFlights = _flightsInventory.SearchFlightsByDate(flights, [year, month, day]);
 
             //Assert
             Assert.Single(filteredFlights);
@@ -199,7 +203,7 @@ namespace AirportTicketBookingSystem.Tests.PassengerFeaturesTests
             var flights = new List<Flight> { flight };
 
             //Act
-            var filteredFlights = FlightsInventory.SearchFlightsByClass(flights, (int)flightClass);
+            var filteredFlights = _flightsInventory.SearchFlightsByClass(flights, (int)flightClass);
 
             //Assert
             Assert.Single(filteredFlights);

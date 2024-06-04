@@ -20,7 +20,7 @@ namespace AirportTicketBookingSystem.Utilities.ManagerUtilities
         public int GetSelectedFlightId()
         {
             Console.WriteLine();
-            FlightsInventory.ShowFlights(_flightsInventory.Flights);
+            _flightsInventory.ShowFlights(_flightsInventory.Flights);
             bool validFlightNumber = false;
             int numericalFlightNumber;
             do
