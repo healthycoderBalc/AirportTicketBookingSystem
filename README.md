@@ -1,0 +1,1 @@
+[![build and test](https://github.com/healthycoderBalc/AirportTicketBookingSystem/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/healthycoderBalc/AirportTicketBookingSystem/actions/workflows/build-and-test.yml)
